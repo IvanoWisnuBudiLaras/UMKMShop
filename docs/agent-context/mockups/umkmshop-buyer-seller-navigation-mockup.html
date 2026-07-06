@@ -1,0 +1,1444 @@
+<!DOCTYPE html><html lang="id"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UMKMShop Buyer Seller Navigation Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..400,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #E86A33;
+      --primary-dark: #EF8556;
+      --dark-primary: #EF8556; /* FIX: alias ditambahkan, sebelumnya undefined dan dipakai di banyak selector .dark */
+      --teal: #1B4B43;
+      --bg: #FAF8F5;
+      --surface: #FFFFFF;
+      --text: #1A1F1D;
+      --muted: #6B6862;
+      --border: #E5E1DA;
+      --dark-bg: #14201C;
+      --dark-surface: #1D2B26;
+      --dark-text: #F5F2EC;
+      --dark-muted: #A8A49C;
+      --dark-border: #2E3B36;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #ebe5dc;
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .material-symbols-rounded {
+      display: inline-block;
+      direction: ltr;
+      font-family: "Material Symbols Rounded";
+      font-feature-settings: "liga";
+      font-style: normal;
+      line-height: 1;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+    }
+
+    .icon-active {
+      font-size: 24px;
+      font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    .icon-idle {
+      font-size: 24px;
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .board {
+      margin: 0 auto;
+      max-width: 1380px;
+      min-width: 1120px;
+      padding: 36px;
+    }
+
+    .intro {
+      align-items: flex-end;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin: 0 0 8px;
+    }
+
+    .intro p {
+      color: #5f5a53;
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 720px;
+    }
+
+    .brand-note {
+      align-items: center;
+      background: rgba(255, 255, 255, .58);
+      border: 1px solid rgba(229, 225, 218, .9);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      font-size: 12px;
+      font-weight: 500;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+
+    .logo {
+      height: 28px;
+      width: 28px;
+    }
+
+    .comparison {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .mode-column {
+      background: rgba(255, 255, 255, .56);
+      border: 1px solid rgba(229, 225, 218, .94);
+      border-radius: 20px;
+      box-shadow: 0 18px 44px rgba(27, 75, 67, .10);
+      padding: 20px;
+    }
+
+    .mode-column.seller {
+      background: linear-gradient(180deg, rgba(27, 75, 67, .08), rgba(255, 255, 255, .58));
+    }
+
+    .column-head {
+      align-items: center;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .mode-pill {
+      align-items: center;
+      background: rgba(232, 106, 51, .12);
+      border: 1px solid rgba(232, 106, 51, .28);
+      border-radius: 999px;
+      color: var(--primary);
+      display: flex;
+      font-size: 12px;
+      font-weight: 600;
+      gap: 7px;
+      height: 34px;
+      padding: 0 12px;
+    }
+
+    .seller .mode-pill {
+      background: rgba(27, 75, 67, .12);
+      border-color: rgba(27, 75, 67, .26);
+      color: var(--teal);
+    }
+
+    .column-head h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .column-head p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 5px 0 0;
+      max-width: 320px;
+    }
+
+    .phone-shell {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      background: var(--bg);
+      border: 8px solid #171918;
+      border-radius: 34px;
+      box-shadow: 0 16px 34px rgba(26, 31, 29, .20);
+      height: 690px;
+      overflow: hidden;
+      position: relative;
+      width: 332px;
+    }
+
+    .phone.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    .screen {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px 16px 88px;
+    }
+
+    .status {
+      align-items: center;
+      display: flex;
+      font-size: 11px;
+      font-weight: 500;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      opacity: .86;
+    }
+
+    .app-header {
+      align-items: center;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      margin: -2px 0 18px;
+      padding: 12px;
+    }
+
+    .buyer-header {
+      background: rgba(232, 106, 51, .10);
+    }
+
+    .seller-header {
+      background: rgba(27, 75, 67, .12);
+    }
+
+    .dark .seller-header {
+      background: rgba(239, 133, 86, .12);
+      border: 1px solid var(--dark-border);
+    }
+
+    .identity-row {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .avatar {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      height: 42px;
+      justify-content: center;
+      width: 42px;
+    }
+
+    .seller .avatar {
+      background: rgba(27, 75, 67, .10);
+      border-color: rgba(27, 75, 67, .22);
+    }
+
+    .dark .avatar {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-primary);
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    .header-caption {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .dark .header-caption {
+      color: var(--dark-muted);
+    }
+
+    .context-token {
+      align-items: center;
+      border-radius: 999px;
+      display: flex;
+      font-size: 11px;
+      font-weight: 500;
+      gap: 5px;
+      height: 30px;
+      padding: 0 9px;
+    }
+
+    .buyer .context-token {
+      background: rgba(232, 106, 51, .14);
+      color: var(--primary);
+    }
+
+    .seller .context-token {
+      background: rgba(27, 75, 67, .14);
+      color: var(--teal);
+    }
+
+    .dark .context-token {
+      background: rgba(239, 133, 86, .14);
+      color: var(--dark-primary);
+    }
+
+    .section-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      margin: 0 0 8px;
+      text-transform: uppercase;
+    }
+
+    .dark .section-label {
+      color: var(--dark-muted);
+    }
+
+    .profile-card,
+    .shop-card,
+    .disabled-card,
+    .logout-card,
+    .mode-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      padding: 14px;
+    }
+
+    .dark .profile-card,
+    .dark .shop-card,
+    .dark .disabled-card,
+    .dark .logout-card,
+    .dark .mode-card {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .profile-card {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 48px 1fr;
+    }
+
+    .big-avatar {
+      align-items: center;
+      background: var(--teal);
+      border-radius: 999px;
+      color: #fff;
+      display: flex;
+      font-size: 18px;
+      font-weight: 600;
+      height: 48px;
+      justify-content: center;
+      width: 48px;
+    }
+
+    .dark .big-avatar {
+      background: var(--dark-primary);
+      color: var(--dark-bg);
+    }
+
+    .name {
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .support {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 5px;
+    }
+
+    .dark .support {
+      color: var(--dark-muted);
+    }
+
+    .shop-card {
+      position: relative;
+    }
+
+    .shop-card::before {
+      background: var(--primary);
+      border-radius: 999px;
+      content: "";
+      height: calc(100% - 28px);
+      left: 0;
+      position: absolute;
+      top: 14px;
+      width: 3px;
+    }
+
+    .dark .shop-card::before {
+      background: var(--dark-primary);
+    }
+
+    .shop-row {
+      align-items: center;
+      display: flex;
+      gap: 11px;
+      padding-left: 4px;
+    }
+
+    .shop-icon {
+      align-items: center;
+      background: rgba(27, 75, 67, .10);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+
+    .dark .shop-icon {
+      background: rgba(239, 133, 86, .12);
+      color: var(--dark-primary);
+    }
+
+    .shop-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .mode-card {
+      align-items: center;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .mode-copy {
+      flex: 1;
+    }
+
+    .mode-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .switch {
+      align-items: center;
+      background: #ded9d1;
+      border-radius: 999px;
+      display: flex;
+      height: 32px;
+      justify-content: flex-start;
+      padding: 3px;
+      width: 56px;
+    }
+
+    .switch.on {
+      background: var(--teal);
+      justify-content: flex-end;
+    }
+
+    .dark .switch.on {
+      background: var(--dark-primary);
+    }
+
+    .knob {
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(26, 31, 29, .18);
+      height: 26px;
+      width: 26px;
+    }
+
+    .dark .switch.on .knob {
+      background: var(--dark-bg);
+    }
+
+    .disabled-card {
+      opacity: .62;
+    }
+
+    .logout-card {
+      align-items: center;
+      border-color: rgba(214, 69, 69, .28);
+      color: #D64545;
+      display: flex;
+      gap: 11px;
+      justify-content: space-between;
+    }
+
+    .logout-card .support {
+      color: #8c5852;
+    }
+
+    .dark .logout-card {
+      border-color: rgba(239, 133, 86, .30);
+      color: var(--dark-primary);
+    }
+
+    .dark .logout-card .support {
+      color: var(--dark-muted);
+    }
+
+    .logout-action {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .logout-icon {
+      align-items: center;
+      background: rgba(214, 69, 69, .10);
+      border-radius: 999px;
+      display: flex;
+      flex: 0 0 auto;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+
+    .dark .logout-icon {
+      background: rgba(239, 133, 86, .14);
+    }
+
+    .disabled-row {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .soon {
+      background: #eeebe5;
+      border-radius: 999px;
+      color: #8a847a;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 5px 8px;
+    }
+
+    .dark .soon {
+      background: rgba(168, 164, 156, .12);
+      color: var(--dark-muted);
+    }
+
+    .bottom-nav {
+      align-items: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 76px;
+      left: 0;
+      padding: 8px 12px 11px;
+      position: absolute;
+      right: 0;
+    }
+
+    .dark .bottom-nav {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .nav-item {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 11px;
+      font-weight: 500;
+      gap: 4px;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .dark .nav-item {
+      color: var(--dark-muted);
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .dark .nav-item.active {
+      color: var(--dark-primary);
+    }
+
+    .nav-highlight {
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 18px;
+      padding: 12px;
+    }
+
+    .seller .nav-highlight {
+      border-color: rgba(27, 75, 67, .22);
+    }
+
+    .nav-sample {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 9px 6px;
+    }
+
+    .sample-caption {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .transition-board {
+      background: rgba(255, 255, 255, .58);
+      border: 1px solid rgba(229, 225, 218, .94);
+      border-radius: 20px;
+      box-shadow: 0 18px 44px rgba(27, 75, 67, .10);
+      margin-top: 28px;
+      padding: 20px;
+    }
+
+    .transition-head {
+      align-items: end;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .transition-head h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .transition-head p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 5px 0 0;
+      max-width: 560px;
+    }
+
+    .frames {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .frame {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      min-height: 168px;
+      overflow: hidden;
+      padding: 14px;
+      position: relative;
+    }
+
+    .frame.darkframe {
+      background: var(--dark-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .frame-title {
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .darkframe .frame-title {
+      color: var(--dark-primary);
+    }
+
+    .mini-profile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .mini-toggle {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .tap-ring {
+      border: 2px solid var(--primary);
+      border-radius: 999px;
+      height: 46px;
+      opacity: .5;
+      position: absolute;
+      right: 18px;
+      top: 80px;
+      width: 70px;
+    }
+
+    .fade-strip {
+      border-radius: 10px;
+      display: grid;
+      gap: 7px;
+      grid-template-columns: 1fr 1fr 1fr;
+      height: 76px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .fade-strip div:nth-child(1) {
+      background: rgba(232, 106, 51, .16);
+    }
+
+    .fade-strip div:nth-child(2) {
+      background: linear-gradient(90deg, rgba(232, 106, 51, .16), rgba(27, 75, 67, .16));
+    }
+
+    .fade-strip div:nth-child(3) {
+      background: rgba(27, 75, 67, .18);
+    }
+
+    .mini-nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 16px;
+      padding: 9px 4px;
+    }
+
+    .mini-nav .nav-item {
+      font-size: 10px;
+    }
+
+    .locked-note {
+      color: #6d675f;
+      font-size: 12px;
+      line-height: 1.55;
+      margin-top: 18px;
+    }
+
+    .theme-note {
+      align-items: flex-start;
+      background: rgba(232, 106, 51, .08);
+      border: 1px solid rgba(232, 106, 51, .24);
+      border-radius: 14px;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding: 14px 16px;
+    }
+
+    .theme-note .material-symbols-rounded {
+      color: var(--primary);
+      font-size: 20px;
+    }
+
+    .theme-note p {
+      color: #5f5a53;
+      font-size: 12.5px;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 900px;
+    }
+
+    .theme-note b {
+      color: var(--text);
+    }
+
+    .screens-board {
+      margin-top: 28px;
+    }
+
+    .screens-head {
+      margin-bottom: 16px;
+    }
+
+    .screens-head h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 5px;
+    }
+
+    .screens-head p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0;
+      max-width: 640px;
+    }
+
+    .search-bar {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      display: flex;
+      font-size: 12px;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+    }
+
+    .dark .search-bar {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 12px;
+    }
+
+    .chip.active {
+      background: rgba(232, 106, 51, .12);
+      border-color: rgba(232, 106, 51, .3);
+      color: var(--primary);
+    }
+
+    .dark .chip {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .dark .chip.active {
+      background: rgba(239, 133, 86, .14);
+      border-color: rgba(239, 133, 86, .32);
+      color: var(--dark-primary);
+    }
+
+    .product-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .dark .product-card {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .product-thumb {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(232, 106, 51, .16), rgba(27, 75, 67, .12));
+      display: flex;
+      height: 88px;
+      justify-content: center;
+    }
+
+    .dark .product-thumb {
+      background: linear-gradient(135deg, rgba(239, 133, 86, .18), rgba(27, 75, 67, .28));
+    }
+
+    .product-thumb .material-symbols-rounded {
+      color: var(--teal);
+      font-size: 26px;
+      opacity: .55;
+    }
+
+    .dark .product-thumb .material-symbols-rounded {
+      color: var(--dark-primary);
+    }
+
+    .product-body {
+      padding: 9px 10px 11px;
+    }
+
+    .product-name {
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .dark .product-price {
+      color: var(--dark-primary);
+    }
+
+    .stat-row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 14px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px;
+      text-align: center;
+    }
+
+    .dark .stat-card {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 9.5px;
+      margin-top: 2px;
+    }
+
+    .dark .stat-label {
+      color: var(--dark-muted);
+    }
+
+    .store-row {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 9px 10px;
+    }
+
+    .dark .store-row {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .store-thumb {
+      align-items: center;
+      background: rgba(27, 75, 67, .10);
+      border-radius: 8px;
+      display: flex;
+      flex: 0 0 auto;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+
+    .dark .store-thumb {
+      background: rgba(239, 133, 86, .14);
+    }
+
+    .store-thumb .material-symbols-rounded {
+      color: var(--teal);
+      font-size: 18px;
+    }
+
+    .dark .store-thumb .material-symbols-rounded {
+      color: var(--dark-primary);
+    }
+
+    .store-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .store-status {
+      align-items: center;
+      border-radius: 999px;
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 9.5px;
+      font-weight: 600;
+      gap: 4px;
+      padding: 4px 8px;
+    }
+
+    .store-status.active {
+      background: rgba(60, 140, 92, .14);
+      color: #2f7248;
+    }
+
+    .store-status.inactive {
+      background: rgba(214, 69, 69, .12);
+      color: #b6382f;
+    }
+
+    .dark .store-status.active {
+      background: rgba(60, 140, 92, .2);
+      color: #7fd39a;
+    }
+
+    .fab {
+      align-items: center;
+      background: var(--primary);
+      border-radius: 999px;
+      bottom: 98px;
+      box-shadow: 0 10px 22px rgba(232, 106, 51, .38);
+      color: #fff;
+      display: flex;
+      height: 46px;
+      justify-content: center;
+      position: absolute;
+      right: 18px;
+      width: 46px;
+    }
+
+    .dark .fab {
+      background: var(--dark-primary);
+      box-shadow: 0 10px 22px rgba(239, 133, 86, .3);
+      color: var(--dark-bg);
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="intro">
+      <div>
+        <h1>Satu akun, dua konteks navigasi</h1>
+        <p>Mockup ini menunjukkan bahwa Pembeli dan Penjual bukan dua akun terpisah. Satu akun punya satu session aktif yang direstore otomatis; ganti akun hanya lewat Logout di Profile.</p>
+      </div>
+      <div class="brand-note">
+        <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+          <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"></path>
+          <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"></path>
+          <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"></path>
+        </svg>
+        Inter + Material Symbols Rounded
+      </div>
+    </section>
+
+    <section class="comparison" aria-label="Buyer and seller mode comparison">
+      <article class="mode-column buyer">
+        <header class="column-head">
+          <div>
+            <h2>Mode Pembeli</h2>
+            <p>Nama pribadi muncul sebagai identitas utama. Navigasi pertama membawa user ke katalog produk.</p>
+          </div>
+          <div class="mode-pill"><span class="material-symbols-rounded icon-active">person</span>Pembeli</div>
+        </header>
+
+        <div class="phone-shell">
+          <div class="phone">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="app-header buyer-header">
+                <div class="identity-row">
+                  <div class="avatar">B</div>
+                  <div>
+                    <div class="header-title">Profile</div>
+                    <div class="header-caption">Akun Budi Santoso</div>
+                  </div>
+                </div>
+                <div class="context-token"><span class="material-symbols-rounded icon-active" style="font-size:16px">person</span>Pribadi</div>
+              </div>
+
+              <div class="section-label">Identitas akun</div>
+              <section class="profile-card">
+                <div class="big-avatar">B</div>
+                <div>
+                  <div class="name">Budi Santoso</div>
+                  <div class="support">Nama pribadi yang tampil saat browse produk, chat sebagai pembeli, dan melihat favorit.</div>
+                </div>
+              </section>
+
+              <div class="section-label">Konteks toko</div>
+              <section class="shop-card">
+                <div class="shop-row">
+                  <div class="shop-icon"><span class="material-symbols-rounded icon-idle">store</span></div>
+                  <div>
+                    <div class="shop-name">Toko Budi Jaya</div>
+                    <div class="support">Tersedia karena user sudah pernah mengaktifkan mode penjual.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="mode-card">
+                <div class="mode-copy">
+                  <div class="mode-title">Beralih ke Toko Saya</div>
+                  <div class="support">Gunakan identitas toko untuk kelola produk dan chat penjual.</div>
+                </div>
+                <div class="switch"><div class="knob"></div></div>
+              </section>
+
+              <section class="logout-card">
+                <div class="logout-action">
+                  <div class="logout-icon"><span class="material-symbols-rounded icon-active" style="font-size:18px">logout</span></div>
+                  <div>
+                    <div class="mode-title">Logout</div>
+                    <div class="support">Bersihkan session lokal dan push token device.</div>
+                  </div>
+                </div>
+                <span class="material-symbols-rounded icon-idle" style="font-size:18px">chevron_right</span>
+              </section>
+
+              <section class="disabled-card">
+                <div class="disabled-row">
+                  <div>
+                    <div class="mode-title">Edit Profil</div>
+                    <div class="support">Nama, kontak, dan data akun</div>
+                  </div>
+                  <span class="soon">Segera Hadir</span>
+                </div>
+              </section>
+            </div>
+
+            <nav class="bottom-nav" aria-label="Buyer bottom navigation">
+              <div class="nav-item"><span class="material-symbols-rounded icon-idle">storefront</span><span>Produk</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item active"><span class="material-symbols-rounded icon-active">person</span><span>Profile</span></div>
+            </nav>
+          </div>
+        </div>
+
+        <div class="nav-highlight">
+          <div class="sample-caption">Bottom nav Pembeli. Tab Chat dan Profile sengaja tetap di posisi 2 dan 3.</div>
+          <div class="nav-sample">
+            <div class="nav-item active"><span class="material-symbols-rounded icon-active">storefront</span><span>Produk</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">person</span><span>Profile</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="mode-column seller">
+        <header class="column-head">
+          <div>
+            <h2>Mode Penjual</h2>
+            <p>Nama pribadi masih ada di profile, tetapi konteks aktif berpindah ke toko. Hanya tab pertama yang berubah.</p>
+          </div>
+          <div class="mode-pill"><span class="material-symbols-rounded icon-active">store</span>Penjual</div>
+        </header>
+
+        <div class="phone-shell">
+          <div class="phone dark">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="app-header seller-header">
+                <div class="identity-row">
+                  <div class="avatar">B</div>
+                  <div>
+                    <div class="header-title">Profile</div>
+                    <div class="header-caption">Akun Budi Santoso</div>
+                  </div>
+                </div>
+                <div class="context-token"><span class="material-symbols-rounded icon-active" style="font-size:16px">store</span>Toko</div>
+              </div>
+
+              <div class="section-label">Identitas akun</div>
+              <section class="profile-card">
+                <div class="big-avatar">B</div>
+                <div>
+                  <div class="name">Budi Santoso</div>
+                  <div class="support">Nama pribadi tetap terlihat supaya user paham ini akun yang sama.</div>
+                </div>
+              </section>
+
+              <div class="section-label">Identitas toko</div>
+              <section class="shop-card">
+                <div class="shop-row">
+                  <div class="shop-icon"><span class="material-symbols-rounded icon-active">store</span></div>
+                  <div>
+                    <div class="shop-name">Toko Budi Jaya</div>
+                    <div class="support">Nama toko yang tampil saat kelola produk dan menerima chat pembeli.</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="mode-card">
+                <div class="mode-copy">
+                  <div class="mode-title">Mode Penjual</div>
+                  <div class="support">Aktif. Tab pertama membuka dashboard toko.</div>
+                </div>
+                <div class="switch on"><div class="knob"></div></div>
+              </section>
+
+              <section class="logout-card">
+                <div class="logout-action">
+                  <div class="logout-icon"><span class="material-symbols-rounded icon-active" style="font-size:18px">logout</span></div>
+                  <div>
+                    <div class="mode-title">Logout</div>
+                    <div class="support">Unregister push token, lalu kembali ke layar auth.</div>
+                  </div>
+                </div>
+                <span class="material-symbols-rounded icon-idle" style="font-size:18px">chevron_right</span>
+              </section>
+
+              <section class="disabled-card">
+                <div class="disabled-row">
+                  <div>
+                    <div class="mode-title">Ganti Password</div>
+                    <div class="support">Keamanan akun</div>
+                  </div>
+                  <span class="soon">Segera Hadir</span>
+                </div>
+              </section>
+            </div>
+
+            <nav class="bottom-nav" aria-label="Seller bottom navigation">
+              <div class="nav-item"><span class="material-symbols-rounded icon-idle">store</span><span>Toko</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item active"><span class="material-symbols-rounded icon-active">person</span><span>Profile</span></div>
+            </nav>
+          </div>
+        </div>
+
+        <div class="nav-highlight">
+          <div class="sample-caption">Bottom nav Penjual. Chat dan Profile tidak bergerak; tab pertama berubah menjadi Toko.</div>
+          <div class="nav-sample">
+            <div class="nav-item active"><span class="material-symbols-rounded icon-active">store</span><span>Toko</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">person</span><span>Profile</span></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="theme-note">
+      <span class="material-symbols-rounded icon-active">info</span>
+      <p><b>Catatan:</b> dark mode di kolom Mode Penjual pada mockup ini murni untuk mendemonstrasikan token warna dark dari <code>Design.md §3.1</code> dalam satu gambar. Di aplikasi sebenarnya, dark/light mode adalah <b>preferensi sistem/pengguna yang berdiri sendiri</b> — tidak berpindah otomatis saat toggle Pembeli ⇄ Penjual. Kedua mode (Pembeli, Penjual) harus bisa tampil di light maupun dark, tergantung pengaturan device masing-masing pengguna.</p>
+    </div>
+
+    <section class="screens-board" aria-label="Detail layar utama tiap mode">
+      <div class="screens-head">
+        <h2>Layar utama tiap mode (tab pertama)</h2>
+        <p>Profile menunjukkan identitas, tapi tab pertama yang paling sering dibuka pengguna — ini yang membedakan pengalaman Pembeli dan Penjual secara nyata, bukan cuma label nav.</p>
+      </div>
+
+      <section class="comparison">
+        <article class="mode-column buyer">
+          <header class="column-head">
+            <div>
+              <h2>Tab "Produk" — Katalog</h2>
+              <p>Browse & search produk aktif dari semua penjual. Harga selalu ditonjolkan dengan warna primary sesuai Design.md.</p>
+            </div>
+          </header>
+
+          <div class="phone-shell">
+            <div class="phone">
+              <div class="screen">
+                <div class="status"><span>09.41</span><span>4G 78%</span></div>
+                <div class="app-header buyer-header">
+                  <div class="identity-row">
+                    <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo" style="height:26px;width:26px">
+                      <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"></path>
+                      <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"></path>
+                    </svg>
+                    <div class="header-title" style="font-size:15px">UMKMShop</div>
+                  </div>
+                  <span class="material-symbols-rounded icon-idle" style="color:var(--teal)">favorite</span>
+                </div>
+
+                <div class="search-bar"><span class="material-symbols-rounded icon-idle" style="font-size:18px">search</span>Cari produk...</div>
+
+                <div class="chip-row">
+                  <div class="chip active">Semua</div>
+                  <div class="chip">Makanan</div>
+                  <div class="chip">Kerajinan</div>
+                  <div class="chip">Fashion</div>
+                </div>
+
+                <div class="product-grid">
+                  <div class="product-card">
+                    <div class="product-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                    <div class="product-body">
+                      <div class="product-name">Keripik Singkong Renyah 250g</div>
+                      <div class="product-price">Rp15.000</div>
+                    </div>
+                  </div>
+                  <div class="product-card">
+                    <div class="product-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                    <div class="product-body">
+                      <div class="product-name">Tas Rajut Handmade</div>
+                      <div class="product-price">Rp85.000</div>
+                    </div>
+                  </div>
+                  <div class="product-card">
+                    <div class="product-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                    <div class="product-body">
+                      <div class="product-name">Kemeja Batik Katun</div>
+                      <div class="product-price">Rp120.000</div>
+                    </div>
+                  </div>
+                  <div class="product-card">
+                    <div class="product-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                    <div class="product-body">
+                      <div class="product-name">Madu Hutan Asli 500ml</div>
+                      <div class="product-price">Rp65.000</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <nav class="bottom-nav" aria-label="Buyer bottom navigation">
+                <div class="nav-item active"><span class="material-symbols-rounded icon-active">storefront</span><span>Produk</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-idle">person</span><span>Profile</span></div>
+              </nav>
+            </div>
+          </div>
+        </article>
+
+        <article class="mode-column seller">
+          <header class="column-head">
+            <div>
+              <h2>Tab "Toko" — Dashboard</h2>
+              <p>Kelola produk milik sendiri. Status aktif/nonaktif terlihat langsung tanpa perlu buka detail — termasuk yang dinonaktifkan otomatis oleh pg_cron setelah 30 hari.</p>
+            </div>
+          </header>
+
+          <div class="phone-shell">
+            <div class="phone">
+              <div class="screen">
+                <div class="status"><span>09.41</span><span>4G 78%</span></div>
+                <div class="app-header seller-header">
+                  <div class="identity-row">
+                    <div class="shop-icon" style="height:32px;width:32px"><span class="material-symbols-rounded icon-active" style="font-size:16px">store</span></div>
+                    <div class="header-title" style="font-size:15px">Toko Budi Jaya</div>
+                  </div>
+                </div>
+
+                <div class="stat-row">
+                  <div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Produk Aktif</div></div>
+                  <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Chat Baru</div></div>
+                  <div class="stat-card"><div class="stat-value">4.8</div><div class="stat-label">Rating*</div></div>
+                </div>
+
+                <div class="section-label">Produk saya</div>
+
+                <div class="store-row">
+                  <div class="store-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                  <div class="store-meta">
+                    <div class="product-name">Keripik Singkong Renyah 250g</div>
+                    <div class="product-price" style="font-size:12px">Rp15.000</div>
+                  </div>
+                  <div class="store-status active"><span class="material-symbols-rounded icon-active" style="font-size:11px">check_circle</span>Aktif</div>
+                </div>
+
+                <div class="store-row">
+                  <div class="store-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                  <div class="store-meta">
+                    <div class="product-name">Keripik Pisang Coklat 200g</div>
+                    <div class="product-price" style="font-size:12px">Rp18.000</div>
+                  </div>
+                  <div class="store-status active"><span class="material-symbols-rounded icon-active" style="font-size:11px">check_circle</span>Aktif</div>
+                </div>
+
+                <div class="store-row" style="opacity:.6">
+                  <div class="store-thumb"><span class="material-symbols-rounded icon-idle">image</span></div>
+                  <div class="store-meta">
+                    <div class="product-name">Kerupuk Udang 100g</div>
+                    <div class="product-price" style="font-size:12px">Rp10.000</div>
+                  </div>
+                  <div class="store-status inactive"><span class="material-symbols-rounded icon-idle" style="font-size:11px">schedule</span>Nonaktif</div>
+                </div>
+              </div>
+
+              <div class="fab"><span class="material-symbols-rounded icon-active">add</span></div>
+
+              <nav class="bottom-nav" aria-label="Seller bottom navigation">
+                <div class="nav-item active"><span class="material-symbols-rounded icon-active">store</span><span>Toko</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-idle">person</span><span>Profile</span></div>
+              </nav>
+            </div>
+          </div>
+        </article>
+      </section>
+      <p class="sample-caption" style="margin-top:10px">*Rating &amp; jumlah Chat Baru adalah fitur Fase 2/di luar cakupan skema saat ini — ditampilkan di sini sebagai placeholder posisi UI, bukan data nyata.</p>
+    </section>
+    <section class="transition-board" aria-label="Mode transition storyboard">
+      <div class="transition-head">
+        <div>
+          <h2>Storyboard transisi mode</h2>
+          <p>Perpindahan hanya terjadi dari Profile. Header cross-fade, tab pertama morph, sedangkan Chat dan Profile tetap diam di posisi yang sama.</p>
+        </div>
+        <div class="brand-note" style="background:#14201C;color:#F5F2EC;border-color:#2E3B36">
+          Dark token: #14201C / #1D2B26 / #EF8556
+        </div>
+      </div>
+
+      <div class="frames">
+        <article class="frame">
+          <div class="frame-title">Frame 1 - tap toggle</div>
+          <div class="mini-profile">
+            <div class="name" style="font-size:15px">Budi Santoso</div>
+            <div class="support">Beralih ke Toko Saya</div>
+            <div class="mini-toggle">
+              <span class="support">Mode Penjual</span>
+              <div class="switch"><div class="knob"></div></div>
+            </div>
+          </div>
+          <div class="tap-ring"></div>
+        </article>
+
+        <article class="frame">
+          <div class="frame-title">Frame 2 - cross-fade header</div>
+          <div class="fade-strip">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <p class="support">250ms ease-in-out. Warna konteks bergeser dari buyer hangat ke seller teal.</p>
+        </article>
+
+        <article class="frame darkframe">
+          <div class="frame-title">Frame 3 - nav morph</div>
+          <div class="mini-nav">
+            <div class="nav-item active"><span class="material-symbols-rounded icon-active">store</span><span>Toko</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">chat_bubble</span><span>Chat</span></div>
+            <div class="nav-item"><span class="material-symbols-rounded icon-idle">person</span><span>Profile</span></div>
+          </div>
+          <p class="support">Produk berubah menjadi Toko. Chat dan Profile tidak berpindah, tidak berubah label, dan tidak ganti ikon.</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="locked-note">Visual artifact only. Mockup ini tidak mengubah Android source, data model, Supabase behavior, role logic, atau flow bisnis.</p>
+  </main>
+
+
+</body></html>

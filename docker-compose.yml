@@ -1,0 +1,48 @@
+services:
+  # Backend Server
+  # Run with: docker compose up -d backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    image: umkmshop/backend:light
+    env_file:
+      - .env
+    environment:
+      UMKMSHOP_BACKEND_PORT: ${UMKMSHOP_BACKEND_PORT:-8090}
+      UMKMSHOP_OAUTH_ISSUER: ${UMKMSHOP_OAUTH_ISSUER:-http://localhost:8090}
+    ports:
+      - "${UMKMSHOP_BACKEND_PORT:-8090}:${UMKMSHOP_BACKEND_PORT:-8090}"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # Android Build Environment
+  # Run with: docker compose run --rm android-builder
+  android-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.android
+    image: umkmshop/android-builder:light
+    working_dir: /workspace
+    environment:
+      GRADLE_USER_HOME: /home/gradle/.gradle
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY:-}
+    volumes:
+      - .:/workspace
+      - gradle-cache:/home/gradle/.gradle
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1536M
+
+volumes:
+  gradle-cache:

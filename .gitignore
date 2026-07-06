@@ -1,0 +1,39 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+**/build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.env
+.env.*
+!.env.example
+firebase-adminsdk*.json
+*-firebase-adminsdk-*.json
+serviceAccountKey.json
+*.jks
+*.keystore
+*.p12
+*.pem
+# Dependencies
+node_modules/
+.npm/
+
+supabase/functions/.env
+supabase/functions/.env.*
+!supabase/functions/.env.example
+
+# Docker and CI/CD
+.docker/
+docker-compose.override.yml
+# If using local volumes for gradle cache in docker-compose
+/gradle-cache/

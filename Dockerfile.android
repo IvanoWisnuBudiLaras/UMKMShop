@@ -1,0 +1,43 @@
+# syntax=docker/dockerfile:1.7
+
+FROM eclipse-temurin:17-jdk-alpine
+
+ARG ANDROID_CMDLINE_TOOLS_VERSION=13114758
+ARG ANDROID_SDK_ROOT=/opt/android-sdk
+
+ENV ANDROID_HOME="${ANDROID_SDK_ROOT}" \
+    ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+    PATH="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools:${PATH}" \
+    GRADLE_USER_HOME="/home/gradle/.gradle" \
+    GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx1024m -Dorg.gradle.daemon=false"
+
+RUN apk add --no-cache \
+        bash \
+        curl \
+        git \
+        unzip \
+        libstdc++ \
+        gcompat \
+        ca-certificates
+
+RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" && \
+    curl -fsSL "https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_CMDLINE_TOOLS_VERSION}_latest.zip" -o /tmp/android-tools.zip && \
+    unzip -q /tmp/android-tools.zip -d /tmp/android-tools && \
+    mv /tmp/android-tools/cmdline-tools "${ANDROID_SDK_ROOT}/cmdline-tools/latest" && \
+    rm -rf /tmp/android-tools /tmp/android-tools.zip
+
+RUN yes | sdkmanager --licenses >/dev/null && \
+    sdkmanager \
+        "platform-tools" \
+        "platforms;android-35" \
+        "build-tools;35.0.0"
+
+RUN adduser -D -u 1000 -s /bin/bash gradle && \
+    mkdir -p "${GRADLE_USER_HOME}" /workspace && \
+    chown -R gradle:gradle "${GRADLE_USER_HOME}" /workspace
+
+WORKDIR /workspace
+USER gradle
+
+# Entrypoint is gradle build by default
+CMD ["./gradlew", ":app:assembleDebug"]

@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UMKMShop Visual Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..400,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --terracotta: #E86A33;
+      --teal: #1B4B43;
+      --bg: #FAF8F5;
+      --surface: #FFFFFF;
+      --text: #1A1F1D;
+      --muted: #6B6862;
+      --border: #E5E1DA;
+      --success: #3C8C5C;
+      --error: #D64545;
+      --dark-bg: #14201C;
+      --dark-surface: #1D2B26;
+      --dark-primary: #EF8556;
+      --dark-text: #F5F2EC;
+      --dark-muted: #A8A49C;
+      --dark-border: #2E3B36;
+      --shadow: 0 16px 48px rgba(27, 75, 67, .10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eee8df;
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .material-symbols-rounded {
+      direction: ltr;
+      display: inline-block;
+      font-family: "Material Symbols Rounded";
+      font-feature-settings: "liga";
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+    }
+
+    .icon-fill {
+      font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    .icon-empty {
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .board {
+      max-width: 1720px;
+      min-width: 1280px;
+      margin: 0 auto;
+      padding: 36px;
+    }
+
+    .intro {
+      align-items: end;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 600;
+      margin: 0 0 8px;
+    }
+
+    .intro p {
+      color: #5b5750;
+      font-size: 14px;
+      margin: 0;
+      max-width: 720px;
+    }
+
+    .legend {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .swatch {
+      border: 1px solid rgba(26, 31, 29, .08);
+      border-radius: 999px;
+      height: 26px;
+      width: 26px;
+    }
+
+    .row {
+      background: rgba(255, 255, 255, .52);
+      border: 1px solid rgba(229, 225, 218, .9);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 118px 1fr 1fr 310px;
+      margin-bottom: 24px;
+      padding: 22px;
+    }
+
+    .row-label {
+      align-self: center;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .row-label h2 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.22;
+      margin: 8px 0 8px;
+    }
+
+    .row-label p,
+    .note {
+      color: #6b6862;
+      font-size: 12px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .phone-wrap {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mode-tag {
+      color: #5d5a53;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .phone {
+      background: var(--bg);
+      border: 8px solid #161817;
+      border-radius: 34px;
+      box-shadow: 0 14px 30px rgba(26, 31, 29, .18);
+      height: 650px;
+      overflow: hidden;
+      position: relative;
+      width: 318px;
+    }
+
+    .phone.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    .screen {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px;
+    }
+
+    .status {
+      align-items: center;
+      display: flex;
+      font-size: 11px;
+      font-weight: 500;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      opacity: .88;
+    }
+
+    .header {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      align-items: center;
+      display: flex;
+      gap: 9px;
+    }
+
+    .logo {
+      height: 34px;
+      width: 34px;
+    }
+
+    .brand-title {
+      color: var(--teal);
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .dark .brand-title {
+      color: var(--dark-text);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .dark .subtitle {
+      color: var(--dark-muted);
+    }
+
+    .round-icon {
+      align-items: center;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      height: 38px;
+      justify-content: center;
+      position: relative;
+      width: 38px;
+    }
+
+    .dark .round-icon {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .dot {
+      background: var(--terracotta);
+      border: 2px solid var(--surface);
+      border-radius: 999px;
+      height: 10px;
+      position: absolute;
+      right: 8px;
+      top: 7px;
+      width: 10px;
+    }
+
+    .dark .dot {
+      background: var(--dark-primary);
+      border-color: var(--dark-surface);
+    }
+
+    .searchbar {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      display: flex;
+      gap: 9px;
+      height: 46px;
+      padding: 0 12px;
+    }
+
+    .dark .searchbar {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 14px;
+      overflow: hidden;
+    }
+
+    .chip {
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 500;
+      height: 30px;
+      padding: 0 11px;
+    }
+
+    .chip.active {
+      background: rgba(27, 75, 67, .10);
+      border-color: rgba(27, 75, 67, .22);
+      color: var(--teal);
+    }
+
+    .dark .chip {
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .dark .chip.active {
+      background: rgba(239, 133, 86, .12);
+      border-color: rgba(239, 133, 86, .32);
+      color: var(--dark-primary);
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .dark .product-card,
+    .dark .seller-card,
+    .dark .message-panel,
+    .dark .bottom-nav,
+    .dark .detail-body {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .photo {
+      align-items: end;
+      background:
+        linear-gradient(135deg, rgba(232, 106, 51, .18), rgba(27, 75, 67, .16)),
+        #f2d9c8;
+      display: flex;
+      height: 118px;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .photo.teal {
+      background:
+        linear-gradient(135deg, rgba(27, 75, 67, .20), rgba(60, 140, 92, .20)),
+        #dbe5dc;
+    }
+
+    .photo.darkish {
+      background:
+        linear-gradient(135deg, rgba(239, 133, 86, .20), rgba(245, 242, 236, .06)),
+        #22312b;
+    }
+
+    .bag,
+    .jar,
+    .shirt {
+      background: #ffffff;
+      border: 2px solid rgba(27, 75, 67, .18);
+      box-shadow: inset 0 -10px 0 rgba(232, 106, 51, .12);
+    }
+
+    .bag {
+      border-radius: 8px 8px 12px 12px;
+      height: 70px;
+      width: 58px;
+    }
+
+    .jar {
+      border-radius: 16px 16px 10px 10px;
+      height: 70px;
+      width: 52px;
+    }
+
+    .shirt {
+      clip-path: polygon(22% 0, 38% 10%, 62% 10%, 78% 0, 100% 26%, 82% 40%, 82% 100%, 18% 100%, 18% 40%, 0 26%);
+      height: 66px;
+      width: 74px;
+    }
+
+    .wish {
+      align-items: center;
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(229, 225, 218, .8);
+      border-radius: 999px;
+      color: var(--terracotta);
+      display: flex;
+      height: 30px;
+      justify-content: center;
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 30px;
+    }
+
+    .dark .wish {
+      background: rgba(29, 43, 38, .88);
+      border-color: var(--dark-border);
+      color: var(--dark-primary);
+    }
+
+    .card-copy {
+      padding: 10px;
+    }
+
+    .name {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.28;
+      min-height: 34px;
+    }
+
+    .dark .name {
+      color: var(--dark-text);
+    }
+
+    .price {
+      color: var(--terracotta);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      margin-top: 6px;
+    }
+
+    .dark .price {
+      color: var(--dark-primary);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .dark .meta {
+      color: var(--dark-muted);
+    }
+
+    .detail-hero {
+      background: linear-gradient(135deg, rgba(232, 106, 51, .20), rgba(27, 75, 67, .14)), #f0dbcc;
+      border-radius: 0 0 18px 18px;
+      height: 250px;
+      margin: -16px -16px 0;
+      overflow: hidden;
+      padding: 16px;
+      position: relative;
+    }
+
+    .dark .detail-hero {
+      background: linear-gradient(135deg, rgba(239, 133, 86, .20), rgba(168, 164, 156, .08)), #1a2a25;
+    }
+
+    .hero-object {
+      background: #ffffff;
+      border: 3px solid rgba(27, 75, 67, .18);
+      border-radius: 18px;
+      box-shadow: inset 0 -22px 0 rgba(232, 106, 51, .12);
+      height: 142px;
+      left: 94px;
+      position: absolute;
+      top: 72px;
+      width: 126px;
+    }
+
+    .hero-object::before {
+      background: var(--teal);
+      border-radius: 999px;
+      content: "";
+      height: 20px;
+      left: 32px;
+      opacity: .12;
+      position: absolute;
+      top: -12px;
+      width: 58px;
+    }
+
+    .back-pill {
+      align-items: center;
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(229, 225, 218, .8);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+
+    .dark .back-pill {
+      background: rgba(29, 43, 38, .88);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .detail-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-top: -24px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .detail-title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .detail-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 14px;
+    }
+
+    .dark .detail-desc {
+      color: var(--dark-muted);
+    }
+
+    .seller-card,
+    .message-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 14px;
+      padding: 12px;
+    }
+
+    .seller-card {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .avatar {
+      align-items: center;
+      background: rgba(27, 75, 67, .10);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      flex: 0 0 auto;
+      font-weight: 600;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+
+    .dark .avatar {
+      background: rgba(239, 133, 86, .12);
+      color: var(--dark-primary);
+    }
+
+    .cta {
+      align-items: center;
+      background: var(--terracotta);
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      font-size: 13px;
+      font-weight: 500;
+      gap: 8px;
+      height: 48px;
+      justify-content: center;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .dark .cta {
+      background: var(--dark-primary);
+      color: #14201C;
+    }
+
+    .chat-header {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .chat-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .chat-product {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .dark .chat-product {
+      color: var(--dark-muted);
+    }
+
+    .messages {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: flex-end;
+      padding: 10px 0 14px;
+    }
+
+    .bubble {
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 76%;
+      padding: 10px 12px;
+    }
+
+    .bubble.them {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 3px;
+    }
+
+    .bubble.me {
+      align-self: flex-end;
+      background: rgba(27, 75, 67, .10);
+      border-bottom-right-radius: 3px;
+    }
+
+    .dark .bubble.them {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .dark .bubble.me {
+      background: rgba(239, 133, 86, .14);
+    }
+
+    .time {
+      color: var(--muted);
+      display: block;
+      font-size: 10px;
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    .dark .time {
+      color: var(--dark-muted);
+    }
+
+    .composer {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      display: flex;
+      gap: 8px;
+      min-height: 46px;
+      padding: 5px 5px 5px 14px;
+    }
+
+    .dark .composer {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .composer span:first-child {
+      color: var(--muted);
+      flex: 1;
+      font-size: 13px;
+    }
+
+    .dark .composer span:first-child {
+      color: var(--dark-muted);
+    }
+
+    .send {
+      align-items: center;
+      background: var(--terracotta);
+      border-radius: 999px;
+      color: #fff;
+      display: flex;
+      height: 36px;
+      justify-content: center;
+      width: 36px;
+    }
+
+    .dark .send {
+      background: var(--dark-primary);
+      color: #14201C;
+    }
+
+    .bottom-nav {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px 18px 0 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      left: 0;
+      padding: 8px 8px 10px;
+      position: absolute;
+      right: 0;
+    }
+
+    .nav-item {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 10px;
+      gap: 3px;
+      justify-content: center;
+    }
+
+    .nav-item.active {
+      color: var(--terracotta);
+      font-weight: 600;
+    }
+
+    .dark .nav-item {
+      color: var(--dark-muted);
+    }
+
+    .dark .nav-item.active {
+      color: var(--dark-primary);
+    }
+
+    .nav-reference {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+      margin-top: 20px;
+    }
+
+    .nav-demo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .dark .nav-demo {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .nav-demo-row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 12px;
+    }
+
+    .mock-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .dark .mock-label {
+      color: var(--dark-muted);
+    }
+
+    .storyboard {
+      align-self: center;
+      background: #fffaf3;
+      border: 1px dashed rgba(27, 75, 67, .28);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .story-title {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .frames {
+      display: grid;
+      gap: 9px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .frame {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      height: 102px;
+      overflow: hidden;
+      padding: 8px;
+      position: relative;
+    }
+
+    .frame-caption {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.25;
+      margin-top: 8px;
+    }
+
+    .mini-bubble {
+      background: rgba(27, 75, 67, .10);
+      border-radius: 9px 9px 2px 9px;
+      bottom: 10px;
+      height: 28px;
+      position: absolute;
+      right: 10px;
+      width: 58px;
+    }
+
+    .mini-bubble.ghost {
+      opacity: .25;
+      transform: translateY(18px);
+    }
+
+    .mini-bubble.mid {
+      opacity: .65;
+      transform: translateY(8px);
+    }
+
+    .mini-icon {
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--terracotta);
+      display: flex;
+      height: 42px;
+      justify-content: center;
+      left: calc(50% - 21px);
+      position: absolute;
+      top: 28px;
+      width: 42px;
+    }
+
+    .mini-icon.filled {
+      background: var(--terracotta);
+      color: #fff;
+    }
+
+    .mini-header {
+      border-radius: 7px;
+      height: 34px;
+      left: 10px;
+      position: absolute;
+      right: 10px;
+      top: 18px;
+    }
+
+    .mini-header.buyer {
+      background: rgba(232, 106, 51, .16);
+    }
+
+    .mini-header.mid {
+      background: linear-gradient(90deg, rgba(232, 106, 51, .16), rgba(27, 75, 67, .16));
+    }
+
+    .mini-header.seller {
+      background: rgba(27, 75, 67, .18);
+    }
+
+    .footer-note {
+      color: #69645d;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="intro">
+      <div>
+        <h1>UMKMShop mobile mockup</h1>
+        <p>Flat visual/UX reference for Android native. Light and dark modes are shown side by side with the final brand palette, Inter typography, Material Symbols Rounded states, and lightweight motion storyboards.</p>
+      </div>
+      <div class="legend" aria-label="Brand colors">
+        <span class="swatch" style="background:#E86A33"></span>
+        <span class="swatch" style="background:#1B4B43"></span>
+        <span class="swatch" style="background:#FAF8F5"></span>
+        <span class="swatch" style="background:#14201C"></span>
+      </div>
+    </section>
+
+    <section class="row">
+      <aside class="row-label">
+        <div class="eyebrow">01 katalog</div>
+        <h2>Browse produk ringan</h2>
+        <p>Grid 2 kolom, logo di header, search bar, kategori lembut, dan kartu produk yang membuat nama + harga cepat discan.</p>
+      </aside>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Light mode</div>
+        <article class="phone">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="header">
+              <div class="brand">
+                <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                  <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                  <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+                </svg>
+                <div>
+                  <div class="brand-title">UMKMShop</div>
+                  <div class="subtitle">Pasar lokal terdekat</div>
+                </div>
+              </div>
+              <div class="round-icon">
+                <span class="material-symbols-rounded icon-empty">notifications</span>
+                <span class="dot"></span>
+              </div>
+            </div>
+            <div class="searchbar">
+              <span class="material-symbols-rounded icon-empty">search</span>
+              <span>Cari makanan, batik, kopi...</span>
+            </div>
+            <div class="chips">
+              <span class="chip active">Semua</span>
+              <span class="chip">Kuliner</span>
+              <span class="chip">Kerajinan</span>
+              <span class="chip">Fashion</span>
+            </div>
+            <div class="grid">
+              <div class="product-card">
+                <div class="photo"><div class="bag"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Kopi Robusta Temanggung</div>
+                  <div class="price">Rp35.000</div>
+                  <div class="meta">Banyumanik</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo teal"><div class="jar"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-fill">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Sambal Bawang Rumahan</div>
+                  <div class="price">Rp22.000</div>
+                  <div class="meta">Tembalang</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo teal"><div class="shirt"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Batik Cap Motif Daun</div>
+                  <div class="price">Rp145.000</div>
+                  <div class="meta">Kota Lama</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo"><div class="jar"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Keripik Pisang Manis</div>
+                  <div class="price">Rp18.000</div>
+                  <div class="meta">Ungaran</div>
+                </div>
+              </div>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-item active"><span class="material-symbols-rounded icon-fill">search</span><span>Katalog</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">storefront</span><span>Toko</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">favorite</span><span>Favorit</span></div>
+            </nav>
+          </div>
+        </article>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Dark mode</div>
+        <article class="phone dark">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="header">
+              <div class="brand">
+                <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                  <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                  <path fill="#EF8556" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  <path stroke="#F5F2EC" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+                </svg>
+                <div>
+                  <div class="brand-title">UMKMShop</div>
+                  <div class="subtitle">Pasar lokal terdekat</div>
+                </div>
+              </div>
+              <div class="round-icon">
+                <span class="material-symbols-rounded icon-empty">notifications</span>
+                <span class="dot"></span>
+              </div>
+            </div>
+            <div class="searchbar">
+              <span class="material-symbols-rounded icon-empty">search</span>
+              <span>Cari makanan, batik, kopi...</span>
+            </div>
+            <div class="chips">
+              <span class="chip active">Semua</span>
+              <span class="chip">Kuliner</span>
+              <span class="chip">Kerajinan</span>
+              <span class="chip">Fashion</span>
+            </div>
+            <div class="grid">
+              <div class="product-card">
+                <div class="photo darkish"><div class="bag"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Kopi Robusta Temanggung</div>
+                  <div class="price">Rp35.000</div>
+                  <div class="meta">Banyumanik</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo darkish"><div class="jar"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-fill">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Sambal Bawang Rumahan</div>
+                  <div class="price">Rp22.000</div>
+                  <div class="meta">Tembalang</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo darkish"><div class="shirt"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Batik Cap Motif Daun</div>
+                  <div class="price">Rp145.000</div>
+                  <div class="meta">Kota Lama</div>
+                </div>
+              </div>
+              <div class="product-card">
+                <div class="photo darkish"><div class="jar"></div></div>
+                <div class="wish"><span class="material-symbols-rounded icon-empty">favorite</span></div>
+                <div class="card-copy">
+                  <div class="name">Keripik Pisang Manis</div>
+                  <div class="price">Rp18.000</div>
+                  <div class="meta">Ungaran</div>
+                </div>
+              </div>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-item active"><span class="material-symbols-rounded icon-fill">search</span><span>Katalog</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">storefront</span><span>Toko</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded icon-empty">favorite</span><span>Favorit</span></div>
+            </nav>
+          </div>
+        </article>
+      </div>
+
+      <aside class="storyboard">
+        <div class="story-title">Motion note: simpan produk</div>
+        <div class="frames">
+          <div>
+            <div class="frame"><span class="mini-icon material-symbols-rounded icon-empty">bookmark</span></div>
+            <div class="frame-caption">0ms icon simpan outline</div>
+          </div>
+          <div>
+            <div class="frame"><span class="mini-icon material-symbols-rounded icon-empty">done</span></div>
+            <div class="frame-caption">120ms morph ke check</div>
+          </div>
+          <div>
+            <div class="frame"><span class="mini-icon filled material-symbols-rounded icon-fill">done</span></div>
+            <div class="frame-caption">250ms terisi primary</div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:12px">Gunakan Compose native, scale kecil, tidak looping.</p>
+      </aside>
+    </section>
+
+    <section class="row">
+      <aside class="row-label">
+        <div class="eyebrow">02 detail</div>
+        <h2>Produk dulu, transaksi manual tetap jelas</h2>
+        <p>Foto dominan, harga primary, seller trust ringkas, dan CTA chat sebagai tindakan utama.</p>
+      </aside>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Light mode</div>
+        <article class="phone">
+          <div class="screen">
+            <div class="detail-hero">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="back-pill"><span class="material-symbols-rounded icon-empty">arrow_back</span></div>
+              <div class="hero-object"></div>
+            </div>
+            <div class="detail-body">
+              <div class="detail-title">Kopi Robusta Temanggung 250g</div>
+              <div class="price" style="font-size:22px">Rp35.000</div>
+              <div class="meta">Banyumanik • Stok tersedia</div>
+              <p class="detail-desc">Kopi robusta lokal, digiling setelah pesanan masuk. Cocok untuk seduh tubruk dan moka pot.</p>
+              <div class="seller-card">
+                <div class="avatar">S</div>
+                <div>
+                  <div class="name" style="min-height:auto">Sari Kopi Lokal</div>
+                  <div class="meta">Penjual aktif • biasanya balas cepat</div>
+                </div>
+              </div>
+            </div>
+            <div class="cta"><span class="material-symbols-rounded icon-fill">chat_bubble</span>Chat Penjual</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Dark mode</div>
+        <article class="phone dark">
+          <div class="screen">
+            <div class="detail-hero">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="back-pill"><span class="material-symbols-rounded icon-empty">arrow_back</span></div>
+              <div class="hero-object"></div>
+            </div>
+            <div class="detail-body">
+              <div class="detail-title">Kopi Robusta Temanggung 250g</div>
+              <div class="price" style="font-size:22px">Rp35.000</div>
+              <div class="meta">Banyumanik • Stok tersedia</div>
+              <p class="detail-desc">Kopi robusta lokal, digiling setelah pesanan masuk. Cocok untuk seduh tubruk dan moka pot.</p>
+              <div class="seller-card">
+                <div class="avatar">S</div>
+                <div>
+                  <div class="name" style="min-height:auto">Sari Kopi Lokal</div>
+                  <div class="meta">Penjual aktif • biasanya balas cepat</div>
+                </div>
+              </div>
+            </div>
+            <div class="cta"><span class="material-symbols-rounded icon-fill">chat_bubble</span>Chat Penjual</div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="storyboard">
+        <div class="story-title">Motion note: toggle mode</div>
+        <div class="frames">
+          <div>
+            <div class="frame"><div class="mini-header buyer"></div></div>
+            <div class="frame-caption">Pembeli: header hangat</div>
+          </div>
+          <div>
+            <div class="frame"><div class="mini-header mid"></div></div>
+            <div class="frame-caption">125ms cross-fade</div>
+          </div>
+          <div>
+            <div class="frame"><div class="mini-header seller"></div></div>
+            <div class="frame-caption">Penjual: teal struktural</div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:12px">Ease-in-out 250ms untuk perubahan konteks besar.</p>
+      </aside>
+    </section>
+
+    <section class="row">
+      <aside class="row-label">
+        <div class="eyebrow">03 chat</div>
+        <h2>Chat sebagai jalur transaksi</h2>
+        <p>Bubble sederhana, badge notifikasi terracotta, dan composer ringan yang fokus pada kirim pesan.</p>
+      </aside>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Light mode</div>
+        <article class="phone">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="chat-header">
+              <div class="back-pill"><span class="material-symbols-rounded icon-empty">arrow_back</span></div>
+              <div class="avatar">S</div>
+              <div style="flex:1">
+                <div class="chat-title">Sari Kopi Lokal</div>
+                <div class="chat-product">Kopi Robusta Temanggung</div>
+              </div>
+              <div class="round-icon"><span class="material-symbols-rounded icon-fill">chat_bubble</span><span class="dot"></span></div>
+            </div>
+            <div class="messages">
+              <div class="bubble them">Halo kak, stok kopi 250g masih ada?<span class="time">09.28</span></div>
+              <div class="bubble me">Masih ada. Mau digiling halus atau sedang?<span class="time">09.29</span></div>
+              <div class="bubble them">Sedang ya kak. Ambil 2 bungkus.<span class="time">09.31</span></div>
+              <div class="bubble me">Siap, nanti saya kirim detail pengambilannya.<span class="time">09.32</span></div>
+            </div>
+            <div class="composer"><span>Ketik pesan...</span><div class="send"><span class="material-symbols-rounded icon-fill">send</span></div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Dark mode</div>
+        <article class="phone dark">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="chat-header">
+              <div class="back-pill"><span class="material-symbols-rounded icon-empty">arrow_back</span></div>
+              <div class="avatar">S</div>
+              <div style="flex:1">
+                <div class="chat-title">Sari Kopi Lokal</div>
+                <div class="chat-product">Kopi Robusta Temanggung</div>
+              </div>
+              <div class="round-icon"><span class="material-symbols-rounded icon-fill">chat_bubble</span><span class="dot"></span></div>
+            </div>
+            <div class="messages">
+              <div class="bubble them">Halo kak, stok kopi 250g masih ada?<span class="time">09.28</span></div>
+              <div class="bubble me">Masih ada. Mau digiling halus atau sedang?<span class="time">09.29</span></div>
+              <div class="bubble them">Sedang ya kak. Ambil 2 bungkus.<span class="time">09.31</span></div>
+              <div class="bubble me">Siap, nanti saya kirim detail pengambilannya.<span class="time">09.32</span></div>
+            </div>
+            <div class="composer"><span>Ketik pesan...</span><div class="send"><span class="material-symbols-rounded icon-fill">send</span></div></div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="storyboard">
+        <div class="story-title">Motion note: kirim pesan</div>
+        <div class="frames">
+          <div>
+            <div class="frame"><div class="mini-bubble ghost"></div></div>
+            <div class="frame-caption">0ms mulai dari bawah</div>
+          </div>
+          <div>
+            <div class="frame"><div class="mini-bubble mid"></div></div>
+            <div class="frame-caption">100ms fade + slide</div>
+          </div>
+          <div>
+            <div class="frame"><div class="mini-bubble"></div></div>
+            <div class="frame-caption">200ms posisi final</div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:12px">Satu bubble masuk, tidak ada efek dekoratif berulang.</p>
+      </aside>
+    </section>
+
+    <section class="row">
+      <aside class="row-label">
+        <div class="eyebrow">04 nav</div>
+        <h2>Referensi state ikon</h2>
+        <p>Material Symbols Rounded aktif memakai fill=1 dan warna primary. Nonaktif memakai fill=0, weight 300, text-secondary.</p>
+      </aside>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Light reference</div>
+        <article class="phone" style="height:360px">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="brand" style="margin:12px 0 18px">
+              <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+              </svg>
+              <div>
+                <div class="brand-title">Bottom navigation</div>
+                <div class="subtitle">Active vs inactive state</div>
+              </div>
+            </div>
+            <div class="nav-demo">
+              <div class="mock-label">Active: fill=1 / primary</div>
+              <div class="nav-demo-row">
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">storefront</span><span>Toko</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">search</span><span>Katalog</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">favorite</span><span>Favorit</span></div>
+              </div>
+            </div>
+            <div class="nav-demo">
+              <div class="mock-label">Inactive: fill=0 / secondary</div>
+              <div class="nav-demo-row">
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">storefront</span><span>Toko</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">search</span><span>Katalog</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">favorite</span><span>Favorit</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="phone-wrap">
+        <div class="mode-tag">Dark reference</div>
+        <article class="phone dark" style="height:360px">
+          <div class="screen">
+            <div class="status"><span>09.41</span><span>4G 78%</span></div>
+            <div class="brand" style="margin:12px 0 18px">
+              <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                <path fill="#EF8556" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                <path stroke="#F5F2EC" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+              </svg>
+              <div>
+                <div class="brand-title">Bottom navigation</div>
+                <div class="subtitle">Active vs inactive state</div>
+              </div>
+            </div>
+            <div class="nav-demo">
+              <div class="mock-label">Active: fill=1 / primary</div>
+              <div class="nav-demo-row">
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">storefront</span><span>Toko</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">search</span><span>Katalog</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item active"><span class="material-symbols-rounded icon-fill">favorite</span><span>Favorit</span></div>
+              </div>
+            </div>
+            <div class="nav-demo">
+              <div class="mock-label">Inactive: fill=0 / secondary</div>
+              <div class="nav-demo-row">
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">storefront</span><span>Toko</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">search</span><span>Katalog</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">chat_bubble</span><span>Chat</span></div>
+                <div class="nav-item"><span class="material-symbols-rounded icon-empty">favorite</span><span>Favorit</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="storyboard">
+        <div class="story-title">Implementation annotation</div>
+        <p class="note">Mockup ini sengaja memakai flat shape, border lembut, tanpa glassmorphism, tanpa parallax, tanpa shadow bertumpuk. Semua frame motion adalah storyboard statis agar guideline mudah diterjemahkan ke Compose.</p>
+        <p class="note" style="margin-top:10px">Spacing utama 16dp, komponen radius 8dp, CTA min-height 48dp, dan ikon aktif memakai fill sebagai state.</p>
+      </aside>
+    </section>
+
+    <p class="footer-note">Visual artifact only. This file does not alter Android app source, data model, route flow, Supabase behavior, or business logic.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1230 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UMKMShop Combined App Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..400,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #E86A33;
+      --primary-dark: #EF8556;
+      --teal: #1B4B43;
+      --bg: #FAF8F5;
+      --surface: #FFFFFF;
+      --text: #1A1F1D;
+      --muted: #6B6862;
+      --border: #E5E1DA;
+      --success: #3C8C5C;
+      --error: #D64545;
+      --dark-bg: #14201C;
+      --dark-surface: #1D2B26;
+      --dark-text: #F5F2EC;
+      --dark-muted: #A8A49C;
+      --dark-border: #2E3B36;
+      --shadow: 0 18px 48px rgba(27, 75, 67, .10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #ece6dd;
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .material-symbols-rounded {
+      direction: ltr;
+      display: inline-block;
+      font-family: "Material Symbols Rounded";
+      font-feature-settings: "liga";
+      font-style: normal;
+      line-height: 1;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+    }
+
+    .fill {
+      font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    .line {
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+    }
+
+    .board {
+      margin: 0 auto;
+      max-width: 1500px;
+      min-width: 1180px;
+      padding: 34px;
+    }
+
+    .intro {
+      align-items: flex-end;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin: 0 0 8px;
+    }
+
+    .intro p {
+      color: #625d55;
+      font-size: 14px;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 820px;
+    }
+
+    .pill-note {
+      align-items: center;
+      background: rgba(255, 255, 255, .62);
+      border: 1px solid rgba(229, 225, 218, .94);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      font-size: 12px;
+      font-weight: 500;
+      gap: 8px;
+      padding: 8px 12px;
+    }
+
+    .logo {
+      flex: 0 0 auto;
+      height: 30px;
+      width: 30px;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, .56);
+      border: 1px solid rgba(229, 225, 218, .94);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 26px;
+      padding: 22px;
+    }
+
+    .section-head {
+      align-items: flex-end;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 5px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0;
+      max-width: 680px;
+    }
+
+    .grid-3 {
+      display: grid;
+      gap: 22px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 26px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .phone-wrap {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .caption {
+      color: #5d574f;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .phone {
+      background: var(--bg);
+      border: 8px solid #171918;
+      border-radius: 34px;
+      box-shadow: 0 16px 34px rgba(26, 31, 29, .20);
+      height: 760px;
+      overflow: hidden;
+      position: relative;
+      width: 318px;
+    }
+
+    .phone.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    .screen {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px;
+    }
+
+    .screen.with-nav {
+      padding-bottom: 84px;
+    }
+
+    .status {
+      align-items: center;
+      display: flex;
+      font-size: 11px;
+      font-weight: 500;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      opacity: .86;
+    }
+
+    .brand-row {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .brand-title {
+      color: var(--teal);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .dark .brand-title {
+      color: var(--dark-text);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .dark .muted {
+      color: var(--dark-muted);
+    }
+
+    .field {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-top: 10px;
+      padding: 11px 12px;
+    }
+
+    .dark .field,
+    .dark .card,
+    .dark .bottom-nav,
+    .dark .bubble.other,
+    .dark .chat-input {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .field-label {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .field-value {
+      align-items: center;
+      display: flex;
+      font-size: 14px;
+      justify-content: space-between;
+    }
+
+    .primary-btn,
+    .google-btn,
+    .secondary-btn,
+    .logout-btn {
+      align-items: center;
+      border-radius: 10px;
+      display: flex;
+      font-size: 13px;
+      font-weight: 500;
+      gap: 8px;
+      height: 48px;
+      justify-content: center;
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .dark .primary-btn {
+      background: var(--primary-dark);
+      color: var(--dark-bg);
+    }
+
+    .google-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .dark .google-btn {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .google-mark {
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--primary);
+      display: inline-flex;
+      font-size: 13px;
+      font-weight: 600;
+      height: 22px;
+      justify-content: center;
+      width: 22px;
+    }
+
+    .dark .google-mark {
+      border-color: var(--dark-border);
+      color: var(--primary-dark);
+    }
+
+    .auth-divider {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      font-size: 11px;
+      gap: 10px;
+      margin: 12px 0 2px;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      background: var(--border);
+      content: "";
+      flex: 1;
+      height: 1px;
+    }
+
+    .dark .auth-divider {
+      color: var(--dark-muted);
+    }
+
+    .dark .auth-divider::before,
+    .dark .auth-divider::after {
+      background: var(--dark-border);
+    }
+
+    .secondary-btn {
+      border: 1px solid var(--border);
+      color: var(--teal);
+    }
+
+    .dark .secondary-btn {
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .logout-btn {
+      border: 1px solid rgba(214, 69, 69, .30);
+      color: var(--error);
+      justify-content: space-between;
+      padding: 0 14px;
+    }
+
+    .dark .logout-btn {
+      border-color: rgba(239, 133, 86, .32);
+      color: var(--primary-dark);
+    }
+
+    .auth-hero {
+      margin-top: 20px;
+    }
+
+    .auth-hero h3 {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.18;
+      margin: 22px 0 8px;
+    }
+
+    .auth-note {
+      background: rgba(27, 75, 67, .08);
+      border: 1px solid rgba(27, 75, 67, .16);
+      border-radius: 10px;
+      color: var(--teal);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: auto;
+      padding: 12px;
+    }
+
+    .dark .auth-note {
+      background: rgba(239, 133, 86, .12);
+      border-color: rgba(239, 133, 86, .22);
+      color: var(--dark-text);
+    }
+
+    .app-header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .icon-circle {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      height: 38px;
+      justify-content: center;
+      position: relative;
+      width: 38px;
+    }
+
+    .dark .icon-circle {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .dot {
+      background: var(--primary);
+      border: 2px solid var(--surface);
+      border-radius: 999px;
+      height: 10px;
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      width: 10px;
+    }
+
+    .dark .dot {
+      background: var(--primary-dark);
+      border-color: var(--dark-surface);
+    }
+
+    .search {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      display: flex;
+      font-size: 12px;
+      gap: 8px;
+      height: 44px;
+      padding: 0 12px;
+    }
+
+    .dark .search {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0 14px;
+      overflow: hidden;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      flex: 0 0 auto;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 11px;
+    }
+
+    .chip.active {
+      background: rgba(232, 106, 51, .12);
+      border-color: rgba(232, 106, 51, .30);
+      color: var(--primary);
+    }
+
+    .dark .chip {
+      border-color: var(--dark-border);
+      color: var(--dark-muted);
+    }
+
+    .dark .chip.active {
+      background: rgba(239, 133, 86, .14);
+      border-color: rgba(239, 133, 86, .30);
+      color: var(--primary-dark);
+    }
+
+    .product-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .thumb {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(232, 106, 51, .16), rgba(27, 75, 67, .12));
+      display: flex;
+      height: 96px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .dark .thumb {
+      background: linear-gradient(135deg, rgba(239, 133, 86, .18), rgba(27, 75, 67, .28));
+    }
+
+    .thumb .material-symbols-rounded {
+      color: var(--teal);
+      font-size: 26px;
+      opacity: .54;
+    }
+
+    .dark .thumb .material-symbols-rounded {
+      color: var(--primary-dark);
+    }
+
+    .wish {
+      align-items: center;
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--primary);
+      display: flex;
+      height: 30px;
+      justify-content: center;
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 30px;
+    }
+
+    .card-body {
+      padding: 9px 10px 11px;
+    }
+
+    .name {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
+      min-height: 34px;
+    }
+
+    .price {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .dark .price {
+      color: var(--primary-dark);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .dark .meta {
+      color: var(--dark-muted);
+    }
+
+    .detail-photo {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(232, 106, 51, .18), rgba(27, 75, 67, .14));
+      border-radius: 0 0 18px 18px;
+      display: flex;
+      height: 224px;
+      justify-content: center;
+      margin: -16px -16px 16px;
+      position: relative;
+    }
+
+    .detail-object {
+      background: #fff;
+      border: 3px solid rgba(27, 75, 67, .16);
+      border-radius: 18px;
+      box-shadow: inset 0 -22px 0 rgba(232, 106, 51, .12);
+      height: 130px;
+      width: 118px;
+    }
+
+    .detail-title {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .seller-card,
+    .profile-card,
+    .shop-card,
+    .mode-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-top: 12px;
+      padding: 13px;
+    }
+
+    .dark .seller-card,
+    .dark .profile-card,
+    .dark .shop-card,
+    .dark .mode-card {
+      background: var(--dark-surface);
+      border-color: var(--dark-border);
+    }
+
+    .row {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
+
+    .avatar {
+      align-items: center;
+      background: rgba(27, 75, 67, .10);
+      border-radius: 999px;
+      color: var(--teal);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 600;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+
+    .dark .avatar {
+      background: rgba(239, 133, 86, .14);
+      color: var(--primary-dark);
+    }
+
+    .bottom-cta {
+      bottom: 16px;
+      left: 16px;
+      position: absolute;
+      right: 16px;
+    }
+
+    .chat-head {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .messages {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: flex-end;
+      padding-bottom: 12px;
+    }
+
+    .bubble {
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 78%;
+      padding: 10px 12px;
+    }
+
+    .bubble.other {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 3px;
+    }
+
+    .bubble.me {
+      align-self: flex-end;
+      background: rgba(27, 75, 67, .10);
+      border-bottom-right-radius: 3px;
+    }
+
+    .dark .bubble.me {
+      background: rgba(239, 133, 86, .14);
+    }
+
+    .payment-card {
+      align-self: flex-end;
+      background: var(--dark-surface);
+      border: 1px solid var(--dark-border);
+      border-radius: 12px;
+      max-width: 86%;
+      overflow: hidden;
+    }
+
+    .payment-head {
+      align-items: center;
+      background: rgba(239, 133, 86, .12);
+      border-bottom: 1px solid var(--dark-border);
+      color: var(--primary-dark);
+      display: flex;
+      font-size: 13px;
+      font-weight: 600;
+      gap: 8px;
+      padding: 10px 12px;
+    }
+
+    .payment-body {
+      padding: 11px 12px;
+    }
+
+    .payment-row {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 7px;
+    }
+
+    .payment-label {
+      color: var(--dark-muted);
+      font-size: 11px;
+    }
+
+    .payment-value {
+      color: var(--dark-text);
+      font-size: 12px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .payment-note {
+      color: var(--dark-muted);
+      font-size: 10.5px;
+      line-height: 1.4;
+      margin-top: 10px;
+    }
+
+    .time {
+      color: var(--muted);
+      display: block;
+      font-size: 10px;
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    .dark .time {
+      color: var(--dark-muted);
+    }
+
+    .chat-input {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      display: flex;
+      gap: 8px;
+      min-height: 46px;
+      padding: 5px 5px 5px 14px;
+    }
+
+    .chat-input span:first-child {
+      color: var(--muted);
+      flex: 1;
+      font-size: 13px;
+    }
+
+    .send {
+      align-items: center;
+      background: var(--primary);
+      border-radius: 999px;
+      color: #fff;
+      display: flex;
+      height: 36px;
+      justify-content: center;
+      width: 36px;
+    }
+
+    .mode-card {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .switch {
+      align-items: center;
+      background: #ded9d1;
+      border-radius: 999px;
+      display: flex;
+      height: 32px;
+      justify-content: flex-start;
+      padding: 3px;
+      width: 56px;
+    }
+
+    .switch.on {
+      background: var(--teal);
+      justify-content: flex-end;
+    }
+
+    .dark .switch.on {
+      background: var(--primary-dark);
+    }
+
+    .knob {
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 2px 6px rgba(26, 31, 29, .18);
+      height: 26px;
+      width: 26px;
+    }
+
+    .dark .switch.on .knob {
+      background: var(--dark-bg);
+    }
+
+    .disabled {
+      opacity: .58;
+    }
+
+    .soon {
+      background: #eeebe5;
+      border-radius: 999px;
+      color: #8a847a;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 5px 8px;
+    }
+
+    .bottom-nav {
+      align-items: center;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 76px;
+      left: 0;
+      padding: 8px 12px 11px;
+      position: absolute;
+      right: 0;
+    }
+
+    .nav-item {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 11px;
+      font-weight: 500;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .dark .nav-item {
+      color: var(--dark-muted);
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .dark .nav-item.active {
+      color: var(--primary-dark);
+    }
+
+    .story-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .frame {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      min-height: 154px;
+      padding: 14px;
+    }
+
+    .frame.dark {
+      background: var(--dark-bg);
+      border-color: var(--dark-border);
+      color: var(--dark-text);
+    }
+
+    .frame-title {
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .frame.dark .frame-title {
+      color: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <section class="intro">
+      <div>
+        <h1>UMKMShop unified mobile mockup</h1>
+        <p>Satu file mockup gabungan untuk auth, katalog, detail, chat, Profile, dan perbedaan navigasi Pembeli/Penjual. Ini murni visual/UX dan tidak mengubah flow, data, atau logika sistem.</p>
+      </div>
+      <div class="pill-note">
+        <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+          <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+          <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+          <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+        </svg>
+        Inter + Material Symbols Rounded
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>1. Auth dan session</h2>
+          <p>Login/register memakai satu active session. Session restore otomatis terjadi di balik layar saat app dibuka ulang; tidak ada tombol untuk mengaktifkan session restore dan tidak ada multi-session switch account.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="phone-wrap">
+          <div class="caption">Login</div>
+          <article class="phone">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="auth-hero">
+                <svg class="logo" style="height:56px;width:56px" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                  <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                  <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+                </svg>
+                <h3>Masuk ke UMKMShop</h3>
+                <div class="muted">Temukan produk lokal dan lanjutkan chat dengan penjual dari satu akun.</div>
+              </div>
+              <div class="google-btn"><span class="google-mark">G</span>Lanjutkan dengan Google</div>
+              <div class="auth-divider">atau masuk dengan email</div>
+              <div class="field">
+                <div class="field-label">Email</div>
+                <div class="field-value">budi@email.com</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Password</div>
+                <div class="field-value">••••••••<span class="material-symbols-rounded line" style="font-size:18px">visibility</span></div>
+              </div>
+              <div class="primary-btn">Login</div>
+              <div class="secondary-btn">Belum punya akun? Daftar</div>
+              <div class="auth-note">Satu perangkat menyimpan satu session aktif. Jika user sudah login, app langsung restore session dan masuk ke katalog.</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="caption">Register</div>
+          <article class="phone">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="auth-hero">
+                <svg class="logo" style="height:56px;width:56px" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                  <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                  <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  <path stroke="#fff" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+                </svg>
+                <h3>Buat akun pribadi</h3>
+                <div class="muted">Nama toko bisa muncul setelah user mengaktifkan mode penjual.</div>
+              </div>
+              <div class="google-btn"><span class="google-mark">G</span>Daftar dengan Google</div>
+              <div class="auth-divider">atau daftar dengan email</div>
+              <div class="field">
+                <div class="field-label">Nama pribadi</div>
+                <div class="field-value">Budi Santoso</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Email</div>
+                <div class="field-value">budi@email.com</div>
+              </div>
+              <div class="field">
+                <div class="field-label">Password</div>
+                <div class="field-value">••••••••</div>
+              </div>
+              <div class="primary-btn">Daftar</div>
+              <div class="secondary-btn">Sudah punya akun? Login</div>
+              <div class="auth-note">Tidak ada pilihan akun ganda. Untuk ganti akun, user harus Logout dari Profile setelah masuk.</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="caption">Restore session</div>
+          <article class="phone dark">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div style="align-items:center;display:flex;flex:1;flex-direction:column;justify-content:center;text-align:center">
+                <svg class="logo" style="height:64px;width:64px" viewBox="0 0 100 100" aria-label="UMKMShop foreground icon">
+                  <path fill="#FFFFFF" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                  <path fill="#EF8556" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  <path stroke="#F5F2EC" stroke-linecap="round" stroke-width="1.2" d="M32.5 21.5V41M50 20.5V41M67.5 21.5V41"/>
+                </svg>
+                <h3 style="font-size:22px;font-weight:600;margin:18px 0 8px">Membuka UMKMShop</h3>
+                <div class="muted" style="max-width:230px">Session aktif dicek otomatis. Tidak ada tombol restore session di UI.</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>2. Flow pembeli utama</h2>
+          <p>Katalog, detail produk, dan chat tetap ringan. Harga, nama produk, CTA chat, dan badge notifikasi menjadi prioritas visual.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="phone-wrap">
+          <div class="caption">Katalog Produk</div>
+          <article class="phone">
+            <div class="screen with-nav">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="app-header">
+                <div class="brand-row">
+                  <svg class="logo" viewBox="0 0 100 100" aria-label="UMKMShop logo">
+                    <path fill="#1B4B43" d="M20 41v27c0 10 8 16 20 16h22l12 9-1-16c4-2 7-6 7-11V41H68v23c0 6-4 8-12 8H44c-8 0-12-2-12-8V41Z"/>
+                    <path fill="#E86A33" d="M24 22c13-2 39-2 52 0 5 0 8 3 7 8l2 11c-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0-5 4-13 4-17.5 0-4.5 4-12.5 4-17.5 0l2-11c-1-5 2-8 7-8Z"/>
+                  </svg>
+                  <div>
+                    <div class="brand-title">UMKMShop</div>
+                    <div class="muted">Pasar lokal terdekat</div>
+                  </div>
+                </div>
+                <div class="icon-circle"><span class="material-symbols-rounded line" style="font-size:22px">notifications</span><span class="dot"></span></div>
+              </div>
+              <div class="search"><span class="material-symbols-rounded line" style="font-size:18px">search</span>Cari produk...</div>
+              <div class="chips">
+                <div class="chip active">Semua</div>
+                <div class="chip">Kuliner</div>
+                <div class="chip">Kerajinan</div>
+                <div class="chip">Fashion</div>
+              </div>
+              <div class="product-grid">
+                <div class="card">
+                  <div class="thumb"><span class="material-symbols-rounded line">image</span><div class="wish"><span class="material-symbols-rounded line" style="font-size:18px">favorite</span></div></div>
+                  <div class="card-body"><div class="name">Kopi Robusta Temanggung</div><div class="price">Rp35.000</div><div class="meta">Banyumanik</div></div>
+                </div>
+                <div class="card">
+                  <div class="thumb"><span class="material-symbols-rounded line">image</span><div class="wish"><span class="material-symbols-rounded fill" style="font-size:18px">favorite</span></div></div>
+                  <div class="card-body"><div class="name">Sambal Bawang Rumahan</div><div class="price">Rp22.000</div><div class="meta">Tembalang</div></div>
+                </div>
+                <div class="card">
+                  <div class="thumb"><span class="material-symbols-rounded line">image</span></div>
+                  <div class="card-body"><div class="name">Batik Cap Motif Daun</div><div class="price">Rp145.000</div><div class="meta">Kota Lama</div></div>
+                </div>
+                <div class="card">
+                  <div class="thumb"><span class="material-symbols-rounded line">image</span></div>
+                  <div class="card-body"><div class="name">Keripik Pisang Manis</div><div class="price">Rp18.000</div><div class="meta">Ungaran</div></div>
+                </div>
+              </div>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-item active"><span class="material-symbols-rounded fill" style="font-size:24px">storefront</span><span>Produk</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">person</span><span>Profile</span></div>
+            </nav>
+          </article>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="caption">Detail Produk</div>
+          <article class="phone">
+            <div class="screen">
+              <div class="detail-photo">
+                <div class="icon-circle" style="left:16px;position:absolute;top:16px"><span class="material-symbols-rounded line" style="font-size:20px">arrow_back</span></div>
+                <div class="detail-object"></div>
+              </div>
+              <div class="detail-title">Kopi Robusta Temanggung 250g</div>
+              <div class="price" style="font-size:22px">Rp35.000</div>
+              <div class="meta">Banyumanik • Stok tersedia</div>
+              <p class="muted" style="font-size:13px;margin-top:14px">Kopi robusta lokal, digiling setelah pesanan masuk. Cocok untuk seduh tubruk dan moka pot.</p>
+              <section class="seller-card">
+                <div class="row"><div class="avatar">S</div><div><div class="name" style="min-height:0">Sari Kopi Lokal</div><div class="meta">Penjual aktif</div></div></div>
+              </section>
+              <div class="bottom-cta"><div class="primary-btn"><span class="material-symbols-rounded fill" style="font-size:20px">chat_bubble</span>Chat Penjual</div></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="caption">Chat Room</div>
+          <article class="phone dark">
+            <div class="screen">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="chat-head">
+                <div class="icon-circle"><span class="material-symbols-rounded line" style="font-size:20px">arrow_back</span></div>
+                <div class="avatar">S</div>
+                <div style="flex:1"><div style="font-size:17px;font-weight:600">Sari Kopi Lokal</div><div class="muted">Kopi Robusta Temanggung</div></div>
+                <div class="icon-circle"><span class="material-symbols-rounded fill" style="font-size:20px">chat_bubble</span><span class="dot"></span></div>
+              </div>
+              <div class="messages">
+                <div class="bubble other">Halo kak, stok kopi 250g masih ada?<span class="time">09.28</span></div>
+                <div class="bubble me">Masih ada. Mau digiling halus atau sedang?<span class="time">09.29</span></div>
+                <div class="bubble other">Sedang ya kak. Ambil 2 bungkus.<span class="time">09.31</span></div>
+                <div class="bubble me">Siap, saya kirim detail pembayaran dan pengambilannya.<span class="time">09.32</span></div>
+                <div class="payment-card">
+                  <div class="payment-head"><span class="material-symbols-rounded fill" style="font-size:18px">payments</span>Detail pembayaran</div>
+                  <div class="payment-body">
+                    <div class="payment-row"><span class="payment-label">Total</span><span class="payment-value">Rp70.000</span></div>
+                    <div class="payment-row"><span class="payment-label">Metode</span><span class="payment-value">Transfer / COD</span></div>
+                    <div class="payment-row"><span class="payment-label">Catatan</span><span class="payment-value">Konfirmasi via chat</span></div>
+                    <div class="payment-note">Pembayaran tetap diselesaikan manual di luar app. Chat hanya membantu penjual mengirim instruksi.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="chat-input"><span>Ketik pesan...</span><div class="send"><span class="material-symbols-rounded fill" style="font-size:18px">send</span></div></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>3. Satu akun, dua konteks navigasi</h2>
+          <p>Perpindahan mode hanya lewat Profile. Chat dan Profile tetap di posisi yang sama; hanya tab pertama yang berubah dari Produk ke Toko. Logout adalah satu-satunya cara ganti akun.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="phone-wrap">
+          <div class="caption">Profile - Mode Pembeli</div>
+          <article class="phone">
+            <div class="screen with-nav">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="app-header" style="background:rgba(232,106,51,.10);border-radius:12px;padding:12px">
+                <div class="row"><div class="avatar">B</div><div><div style="font-size:18px;font-weight:600">Profile</div><div class="muted">Akun Budi Santoso</div></div></div>
+                <div class="chip active">Pribadi</div>
+              </div>
+              <section class="profile-card">
+                <div class="row"><div class="avatar" style="height:48px;width:48px">B</div><div><div style="font-size:19px;font-weight:600">Budi Santoso</div><div class="muted">Nama pribadi untuk browse produk dan chat sebagai pembeli.</div></div></div>
+              </section>
+              <section class="shop-card">
+                <div class="row"><div class="avatar"><span class="material-symbols-rounded line" style="font-size:20px">store</span></div><div><div class="name" style="min-height:0">Toko Budi Jaya</div><div class="meta">Konteks toko tersedia karena mode penjual pernah aktif.</div></div></div>
+              </section>
+              <section class="mode-card">
+                <div><div class="name" style="min-height:0">Beralih ke Toko Saya</div><div class="meta">Masuk ke konteks penjual.</div></div>
+                <div class="switch"><div class="knob"></div></div>
+              </section>
+              <div class="logout-btn"><span><span class="material-symbols-rounded fill" style="font-size:18px;vertical-align:middle">logout</span> Logout</span><span class="material-symbols-rounded line" style="font-size:18px">chevron_right</span></div>
+              <section class="card disabled" style="margin-top:12px;padding:13px"><div class="row" style="justify-content:space-between"><div><div class="name" style="min-height:0">Edit Profil</div><div class="meta">Nama, kontak, dan data akun</div></div><span class="soon">Segera Hadir</span></div></section>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">storefront</span><span>Produk</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item active"><span class="material-symbols-rounded fill" style="font-size:24px">person</span><span>Profile</span></div>
+            </nav>
+          </article>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="caption">Profile - Mode Penjual</div>
+          <article class="phone dark">
+            <div class="screen with-nav">
+              <div class="status"><span>09.41</span><span>4G 78%</span></div>
+              <div class="app-header" style="background:rgba(239,133,86,.12);border:1px solid var(--dark-border);border-radius:12px;padding:12px">
+                <div class="row"><div class="avatar">B</div><div><div style="font-size:18px;font-weight:600">Profile</div><div class="muted">Akun Budi Santoso</div></div></div>
+                <div class="chip active"><span class="material-symbols-rounded fill" style="font-size:14px">store</span>Toko</div>
+              </div>
+              <section class="profile-card">
+                <div class="row"><div class="avatar" style="height:48px;width:48px">B</div><div><div style="font-size:19px;font-weight:600">Budi Santoso</div><div class="muted">Nama pribadi tetap terlihat agar ini terasa sebagai akun yang sama.</div></div></div>
+              </section>
+              <section class="shop-card">
+                <div class="row"><div class="avatar"><span class="material-symbols-rounded fill" style="font-size:20px">store</span></div><div><div class="name" style="min-height:0">Toko Budi Jaya</div><div class="meta">Identitas toko untuk kelola produk dan chat pembeli.</div></div></div>
+              </section>
+              <section class="mode-card">
+                <div><div class="name" style="min-height:0">Mode Penjual</div><div class="meta">Aktif. Tab pertama membuka dashboard toko.</div></div>
+                <div class="switch on"><div class="knob"></div></div>
+              </section>
+              <div class="logout-btn"><span><span class="material-symbols-rounded fill" style="font-size:18px;vertical-align:middle">logout</span> Logout</span><span class="material-symbols-rounded line" style="font-size:18px">chevron_right</span></div>
+              <section class="card disabled" style="margin-top:12px;padding:13px"><div class="row" style="justify-content:space-between"><div><div class="name" style="min-height:0">Ganti Password</div><div class="meta">Keamanan akun</div></div><span class="soon">Segera Hadir</span></div></section>
+            </div>
+            <nav class="bottom-nav">
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">store</span><span>Toko</span></div>
+              <div class="nav-item"><span class="material-symbols-rounded line" style="font-size:24px">chat_bubble</span><span>Chat</span></div>
+              <div class="nav-item active"><span class="material-symbols-rounded fill" style="font-size:24px">person</span><span>Profile</span></div>
+            </nav>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>4. Motion storyboard</h2>
+          <p>Storyboard statis untuk interaksi ringan. Semua motion tetap Compose-native, pendek, dan fungsional.</p>
+        </div>
+      </div>
+      <div class="story-grid">
+        <article class="frame">
+          <div class="frame-title">Kirim pesan</div>
+          <div class="bubble me" style="margin-left:auto;opacity:.25;transform:translateY(18px)">Siap kak</div>
+          <div class="bubble me" style="margin-left:auto;margin-top:8px;opacity:.65;transform:translateY(8px)">Siap kak</div>
+          <div class="bubble me" style="margin-left:auto;margin-top:8px">Siap kak</div>
+        </article>
+        <article class="frame">
+          <div class="frame-title">Simpan produk</div>
+          <div style="align-items:center;display:flex;gap:18px;justify-content:center;margin-top:24px">
+            <span class="material-symbols-rounded line" style="border:1px solid var(--border);border-radius:999px;color:var(--primary);font-size:28px;padding:10px">bookmark</span>
+            <span class="material-symbols-rounded line" style="border:1px solid var(--border);border-radius:999px;color:var(--primary);font-size:28px;padding:10px">done</span>
+            <span class="material-symbols-rounded fill" style="background:var(--primary);border-radius:999px;color:#fff;font-size:28px;padding:10px">done</span>
+          </div>
+        </article>
+        <article class="frame dark">
+          <div class="frame-title">Toggle mode</div>
+          <div style="background:rgba(232,106,51,.16);border-radius:10px;height:30px;margin-top:18px"></div>
+          <div style="background:linear-gradient(90deg,rgba(232,106,51,.16),rgba(27,75,67,.18));border-radius:10px;height:30px;margin-top:8px"></div>
+          <div style="background:rgba(239,133,86,.14);border:1px solid var(--dark-border);border-radius:10px;height:30px;margin-top:8px"></div>
+          <div class="muted" style="margin-top:10px">Tab pertama morph Produk ke Toko; Chat dan Profile diam.</div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
