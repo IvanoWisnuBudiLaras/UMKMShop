@@ -2,41 +2,57 @@ package com.application.umkmshop.backend.oauth
 
 interface OAuthStore {
     fun findClient(clientId: String): OAuthClient?
+    fun registerClient(client: OAuthClient)
+    
     fun saveAuthorizationCode(code: StoredAuthorizationCode)
-    fun findAuthorizationCodeByHash(codeHash: String): StoredAuthorizationCode?
+    fun findAuthorizationCode(code: String): StoredAuthorizationCode?
+    fun markCodeAsUsed(code: String): Boolean
+    
     fun saveRefreshToken(token: StoredRefreshToken)
     fun findRefreshTokenByHash(tokenHash: String): StoredRefreshToken?
-    fun saveAccessGrant(tokenHash: String, grant: AccessGrant)
-    fun findAccessGrant(tokenHash: String): AccessGrant?
+    fun revokeRefreshToken(tokenHash: String)
+    fun revokeRefreshTokenChain(rotatedFromHash: String)
+    
+    fun getActiveSigningKey(): SigningKey?
+    fun saveSigningKey(key: SigningKey)
+    
+    fun findUserById(userId: String): OAuthUser?
+    
+    fun enqueueNotification(userId: String, payload: String)
 }
 
-class InMemoryOAuthStore(
-    clients: Collection<OAuthClient>,
-) : OAuthStore {
-    private val clientsById = clients.associateBy { it.clientId }.toMutableMap()
-    private val authorizationCodes = mutableMapOf<String, StoredAuthorizationCode>()
+class InMemoryOAuthStore : OAuthStore {
+    private val clients = mutableMapOf<String, OAuthClient>()
+    private val authCodes = mutableMapOf<String, StoredAuthorizationCode>()
     private val refreshTokens = mutableMapOf<String, StoredRefreshToken>()
-    private val accessGrants = mutableMapOf<String, AccessGrant>()
+    private val keys = mutableListOf<SigningKey>()
 
-    override fun findClient(clientId: String): OAuthClient? = clientsById[clientId]
+    override fun findClient(clientId: String): OAuthClient? = clients[clientId]
+    override fun registerClient(client: OAuthClient) { clients[client.clientId] = client }
 
-    override fun saveAuthorizationCode(code: StoredAuthorizationCode) {
-        authorizationCodes[code.codeHash] = code
+    override fun saveAuthorizationCode(code: StoredAuthorizationCode) { authCodes[code.code] = code }
+    override fun findAuthorizationCode(code: String): StoredAuthorizationCode? = authCodes[code]
+    override fun markCodeAsUsed(code: String): Boolean {
+        val existing = authCodes[code] ?: return false
+        if (existing.used) return false
+        authCodes[code] = existing.copy(used = true)
+        return true
     }
 
-    override fun findAuthorizationCodeByHash(codeHash: String): StoredAuthorizationCode? =
-        authorizationCodes[codeHash]
-
-    override fun saveRefreshToken(token: StoredRefreshToken) {
-        refreshTokens[token.tokenHash] = token
+    override fun saveRefreshToken(token: StoredRefreshToken) { refreshTokens[token.tokenHash] = token }
+    override fun findRefreshTokenByHash(tokenHash: String): StoredRefreshToken? = refreshTokens[tokenHash]
+    override fun revokeRefreshToken(tokenHash: String) {
+        val existing = refreshTokens[tokenHash] ?: return
+        refreshTokens[tokenHash] = existing.copy(revoked = true)
+    }
+    override fun revokeRefreshTokenChain(rotatedFromHash: String) {
+        refreshTokens.values.filter { it.tokenHash == rotatedFromHash || it.rotatedFrom == rotatedFromHash }
+            .forEach { refreshTokens[it.tokenHash] = it.copy(revoked = true) }
     }
 
-    override fun findRefreshTokenByHash(tokenHash: String): StoredRefreshToken? =
-        refreshTokens[tokenHash]
+    override fun getActiveSigningKey(): SigningKey? = keys.firstOrNull { it.active }
+    override fun saveSigningKey(key: SigningKey) { keys.add(key) }
 
-    override fun saveAccessGrant(tokenHash: String, grant: AccessGrant) {
-        accessGrants[tokenHash] = grant
-    }
-
-    override fun findAccessGrant(tokenHash: String): AccessGrant? = accessGrants[tokenHash]
+    override fun findUserById(userId: String): OAuthUser? = null
+    override fun enqueueNotification(userId: String, payload: String) { println("TEST PUSH (IN-MEM): To User $userId with Payload $payload") }
 }

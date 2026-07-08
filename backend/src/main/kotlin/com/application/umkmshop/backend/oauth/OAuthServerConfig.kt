@@ -1,19 +1,27 @@
 package com.application.umkmshop.backend.oauth
 
 import java.time.Clock
+import javax.sql.DataSource
 
 data class OAuthServerConfig(
     val issuer: String,
     val tokenPepper: String,
     val demoUser: OAuthUser,
     val demoClient: OAuthClient,
+    val useJdbcStore: Boolean = false,
 ) {
     companion object {
         fun fromEnvironment(env: Map<String, String> = System.getenv(), defaultPort: Int = 8090): OAuthServerConfig {
             val issuer = env["UMKMSHOP_OAUTH_ISSUER"] ?: "http://127.0.0.1:$defaultPort"
             val tokenPepper = env["UMKMSHOP_OAUTH_TOKEN_PEPPER"]
                 ?: error("UMKMSHOP_OAUTH_TOKEN_PEPPER is required for hashing authorization codes and tokens.")
-            val redirectUri = env["UMKMSHOP_OAUTH_DEMO_REDIRECT_URI"] ?: "$issuer/demo/callback"
+            val redirectUris = (env["UMKMSHOP_OAUTH_DEMO_REDIRECT_URI"] ?: "$issuer/demo/callback")
+                .split(",")
+                .map { it.trim() }
+                .toSet()
+
+            val useJdbcStore = env["UMKMSHOP_OAUTH_USE_JDBC"]?.toBoolean() ?: false
+
             return OAuthServerConfig(
                 issuer = issuer.trimEnd('/'),
                 tokenPepper = tokenPepper,
@@ -25,27 +33,43 @@ data class OAuthServerConfig(
                 demoClient = OAuthClient(
                     clientId = env["UMKMSHOP_OAUTH_DEMO_CLIENT_ID"] ?: "umkmshop-demo-public",
                     clientName = env["UMKMSHOP_OAUTH_DEMO_CLIENT_NAME"] ?: "UMKMShop Demo Public Client",
-                    clientType = ClientType.Public,
-                    redirectUris = setOf(redirectUri),
+                    clientSecretHash = "", // Public client for demo
+                    redirectUris = redirectUris,
                 ),
+                useJdbcStore = useJdbcStore
             )
         }
     }
 }
 
-fun createDemoOAuthService(config: OAuthServerConfig, clock: Clock = Clock.systemUTC()): OAuthService {
-    val keyPair = generateRsaKeyPair()
+fun createOAuthService(
+    config: OAuthServerConfig, 
+    dataSource: DataSource? = null,
+    clock: Clock = Clock.systemUTC()
+): OAuthService {
+    val store = if (config.useJdbcStore && dataSource != null) {
+        JdbcOAuthStore(dataSource).also { 
+            it.registerClient(config.demoClient)
+        }
+    } else {
+        InMemoryOAuthStore().also { 
+            it.registerClient(config.demoClient)
+        }
+    }
+
     val jwtService = JwtService(
         issuer = config.issuer,
-        keyId = "local-demo-rsa-1",
-        keyPair = keyPair,
+        store = store,
         clock = clock,
     )
+
     return OAuthService(
         issuer = config.issuer,
-        store = InMemoryOAuthStore(listOf(config.demoClient)),
+        store = store,
         jwtService = jwtService,
         clock = clock,
-        tokenPepper = config.tokenPepper,
     )
 }
+
+fun createDemoOAuthService(config: OAuthServerConfig, clock: Clock = Clock.systemUTC()): OAuthService =
+    createOAuthService(config, null, clock)

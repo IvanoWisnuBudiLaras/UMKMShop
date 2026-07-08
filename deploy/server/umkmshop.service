@@ -1,0 +1,17 @@
+[Unit]
+Description=UMKMShop Worker + OAuth Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/umkmshop
+EnvironmentFile=/opt/umkmshop/.env
+# Optimization for 2GB server
+ExecStart=/usr/bin/java -Xms256m -Xmx896m -jar /opt/umkmshop/app.jar
+Restart=always
+RestartSec=5
+User=umkmshop
+Group=umkmshop
+
+[Install]
+WantedBy=multi-user.target

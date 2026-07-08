@@ -2,11 +2,14 @@ package com.application.umkmshop.ui.product.logic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.umkmshop.data.auth.AuthErrorParser
 import com.application.umkmshop.data.product.ProductImageUpload
 import com.application.umkmshop.data.product.ProductRepository
 import com.application.umkmshop.data.product.SellerProduct
 import com.application.umkmshop.data.product.SellerProductInput
 import com.application.umkmshop.data.product.isPhase3ProductCategory
+import com.application.umkmshop.data.shipping.ShippingRepository
+import com.application.umkmshop.data.shipping.WilayahItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +27,13 @@ data class SellerProductUiState(
     val description: String = "",
     val category: String = "",
     val city: String = "",
-    val cityOptions: List<String> = emptyList(),
+    
+    // Wilayah.id Integration
+    val provinces: List<WilayahItem> = emptyList(),
+    val regencies: List<WilayahItem> = emptyList(),
+    val selectedProvince: WilayahItem? = null,
+    val selectedRegency: WilayahItem? = null,
+
     val selectedImage: ProductImageUpload? = null,
     val selectedImageName: String? = null,
 ) {
@@ -36,25 +45,59 @@ data class SellerProductUiState(
 
 open class SellerProductViewModel(
     private val repository: ProductRepository = ProductRepository(),
+    private val shippingRepository: ShippingRepository = ShippingRepository(),
 ) : ViewModel() {
     protected val _state = MutableStateFlow(SellerProductUiState())
     val state: StateFlow<SellerProductUiState> = _state.asStateFlow()
+
+    init {
+        loadProvinces()
+    }
+
+    private fun loadProvinces() {
+        viewModelScope.launch {
+            val provinces = shippingRepository.getProvinces()
+            _state.update { it.copy(provinces = provinces) }
+        }
+    }
+
+    fun selectProvince(province: WilayahItem) {
+        _state.update { 
+            it.copy(
+                selectedProvince = province,
+                selectedRegency = null,
+                regencies = emptyList(),
+                city = ""
+            )
+        }
+        viewModelScope.launch {
+            val regencies = shippingRepository.getRegencies(province.code)
+            _state.update { it.copy(regencies = regencies) }
+        }
+    }
+
+    fun selectRegency(regency: WilayahItem) {
+        _state.update { 
+            it.copy(
+                selectedRegency = regency,
+                city = regency.name
+            )
+        }
+    }
 
     fun refreshProducts() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, message = null) }
             runCatching {
-                Triple(
+                Pair(
                     repository.listOwnProducts(),
                     repository.getOwnCity(),
-                    repository.listAvailableCities(),
                 )
-            }.onSuccess { (products, city, cityOptions) ->
+            }.onSuccess { (products, city) ->
                     _state.update {
                         it.copy(
                             products = products,
                             city = city,
-                            cityOptions = cityOptions,
                             isLoading = false,
                         )
                     }
@@ -63,7 +106,7 @@ open class SellerProductViewModel(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            message = error.userMessage(),
+                            message = AuthErrorParser.mapThrowableToMessage(error),
                         )
                     }
                 }
@@ -117,10 +160,6 @@ open class SellerProductViewModel(
         _state.update { it.copy(category = value, message = null) }
     }
 
-    fun setCity(value: String) {
-        _state.update { it.copy(city = value, message = null) }
-    }
-
     fun setSelectedImage(upload: ProductImageUpload, displayName: String) {
         _state.update {
             it.copy(
@@ -137,7 +176,7 @@ open class SellerProductViewModel(
         val validationMessage = when {
             current.name.isBlank() -> "Nama produk wajib diisi."
             price == null || price < 0.0 -> "Harga produk tidak valid."
-            !isPhase3ProductCategory(current.category) -> "Pilih kategori Fase 3."
+            !isPhase3ProductCategory(current.category) -> "Silakan pilih kategori produk."
             !current.isEditing && current.selectedImage == null -> "Minimal satu foto produk wajib dipilih."
             else -> null
         }
@@ -180,7 +219,7 @@ open class SellerProductViewModel(
                 _state.update {
                     it.copy(
                         isSaving = false,
-                        message = error.userMessage(),
+                        message = AuthErrorParser.mapThrowableToMessage(error),
                     )
                 }
             }
@@ -198,7 +237,7 @@ open class SellerProductViewModel(
                                 if (it.id == updatedProduct.id) updatedProduct else it
                             },
                             isSaving = false,
-                            message = "Produk dinonaktifkan.",
+                            message = "Produk telah disembunyikan dari katalog.",
                         )
                     }
                     refreshProducts()
@@ -207,7 +246,32 @@ open class SellerProductViewModel(
                     _state.update {
                         it.copy(
                             isSaving = false,
-                            message = error.userMessage(),
+                            message = AuthErrorParser.mapThrowableToMessage(error),
+                        )
+                    }
+                }
+        }
+    }
+
+    fun deleteProduct(productId: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isSaving = true, message = null) }
+            runCatching { repository.deleteProduct(productId) }
+                .onSuccess {
+                    _state.update { state ->
+                        state.copy(
+                            products = state.products.filterNot { it.id == productId },
+                            isSaving = false,
+                            message = "Produk berhasil dihapus secara permanen.",
+                        )
+                    }
+                    refreshProducts()
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isSaving = false,
+                            message = AuthErrorParser.mapThrowableToMessage(error),
                         )
                     }
                 }
@@ -232,15 +296,12 @@ open class SellerProductViewModel(
                     _state.update {
                         it.copy(
                             isSaving = false,
-                            message = error.userMessage(),
+                            message = AuthErrorParser.mapThrowableToMessage(error),
                         )
                     }
                 }
         }
     }
-
-    private fun Throwable.userMessage(): String =
-        message?.takeIf { it.isNotBlank() } ?: "Operasi produk gagal."
 
     private fun Double.toPlainPrice(): String =
         if (this % 1.0 == 0.0) toLong().toString() else toString()

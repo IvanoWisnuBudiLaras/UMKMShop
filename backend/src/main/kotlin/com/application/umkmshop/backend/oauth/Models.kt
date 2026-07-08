@@ -2,18 +2,11 @@ package com.application.umkmshop.backend.oauth
 
 import java.time.Instant
 
-enum class ClientType {
-    Public,
-    Confidential,
-}
-
 data class OAuthClient(
     val clientId: String,
-    val clientName: String,
-    val clientType: ClientType,
-    val clientSecretHash: String? = null,
+    val clientSecretHash: String,
     val redirectUris: Set<String>,
-    val allowedScopes: Set<String> = setOf("openid", "email", "profile"),
+    val clientName: String,
 )
 
 data class OAuthUser(
@@ -35,33 +28,32 @@ data class AuthorizationRequest(
 )
 
 data class StoredAuthorizationCode(
-    val codeHash: String,
+    val code: String,
     val clientId: String,
-    val user: OAuthUser,
+    val userId: String,
     val redirectUri: String,
-    val scope: Set<String>,
     val codeChallenge: String,
-    val nonce: String?,
+    val codeChallengeMethod: String = "S256",
+    val scope: String,
     val expiresAt: Instant,
-    var consumedAt: Instant? = null,
+    val used: Boolean = false,
 )
 
 data class StoredRefreshToken(
-    val id: String,
     val tokenHash: String,
     val clientId: String,
-    val user: OAuthUser,
-    val scope: Set<String>,
+    val userId: String,
+    val scope: String,
+    val rotatedFrom: String? = null,
+    val revoked: Boolean = false,
     val expiresAt: Instant,
-    var revokedAt: Instant? = null,
-    var replacedBy: String? = null,
 )
 
-data class AccessGrant(
-    val clientId: String,
-    val user: OAuthUser,
-    val scope: Set<String>,
-    val expiresAt: Instant,
+data class SigningKey(
+    val kid: String,
+    val privateKeyPem: String,
+    val publicKeyPem: String,
+    val active: Boolean = true,
 )
 
 data class TokenResponse(

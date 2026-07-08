@@ -4,7 +4,9 @@ import com.application.umkmshop.data.notification.PushTokenRepository
 import com.application.umkmshop.data.supabase.SupabaseClientProvider
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -88,6 +90,27 @@ class AuthRepository(
                 email = user.email,
                 profile = fetchOwnProfile(user.id),
                 message = "Login berhasil.",
+            )
+        }
+
+    suspend fun signInWithGoogle(idToken: String): AuthSessionState =
+        withContext(ioDispatcher) {
+            require(hasClientConfig()) { "Konfigurasi Supabase belum tersedia." }
+            client.auth.signInWith(IDToken) {
+                this.idToken = idToken
+                this.provider = Google
+            }
+
+            val user = requireNotNull(client.auth.currentUserOrNull()) {
+                "Login Google berhasil tetapi session belum tersedia."
+            }
+            registerPushTokenIfPossible()
+            AuthSessionState(
+                isRestoring = false,
+                userId = user.id,
+                email = user.email,
+                profile = fetchOwnProfile(user.id),
+                message = "Login Google berhasil.",
             )
         }
 

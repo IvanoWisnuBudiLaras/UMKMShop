@@ -72,7 +72,9 @@ class OrderRepository(
                         subtotal = input.subtotal,
                         shippingCost = input.shippingCost,
                     ),
-                )
+                ) {
+                    select()
+                }
                 .decodeSingle<OrderDto>()
             val orderId = inserted.id ?: error("Order tersimpan tetapi id tidak tersedia.")
             val invoiced = createXenditInvoice(orderId).order ?: client.from("orders")

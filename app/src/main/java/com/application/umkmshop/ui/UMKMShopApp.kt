@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,10 +44,17 @@ import com.application.umkmshop.ui.notification.InboxScreen
 import com.application.umkmshop.ui.notification.logic.InboxUiState
 import com.application.umkmshop.ui.notification.logic.InboxViewModel
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalContext
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.application.umkmshop.ui.profile.ProfileScreen
 import com.application.umkmshop.ui.profile.logic.ProfileViewModel
 import com.application.umkmshop.ui.components.*
 import com.application.umkmshop.ui.theme.UMKMShopTheme
+import com.application.umkmshop.BuildConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +79,7 @@ fun UMKMShopApp(
         onAuthSetPassword = authViewModel::setPassword,
         onAuthSetSignup = authViewModel::setSignup,
         onAuthSubmit = authViewModel::submit,
+        onAuthGoogleSubmit = authViewModel::signInWithGoogle,
         onAuthLogout = { onLoggedOut -> authViewModel.logout(onLoggedOut) },
         inboxViewModel = inboxViewModel,
         modifier = modifier
@@ -90,6 +99,7 @@ fun UMKMShopAppContent(
     onAuthSetPassword: (String) -> Unit,
     onAuthSetSignup: (Boolean) -> Unit,
     onAuthSubmit: () -> Unit,
+    onAuthGoogleSubmit: (String) -> Unit,
     onAuthLogout: (() -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     inboxViewModel: InboxViewModel? = null,
@@ -151,6 +161,7 @@ fun UMKMShopAppContent(
                     onPasswordChange = onAuthSetPassword,
                     onModeChange = onAuthSetSignup,
                     onSubmit = onAuthSubmit,
+                    onGoogleSubmit = onAuthGoogleSubmit,
                     onEnterApp = {
                         navController.navigate(AppDestination.BuyerCatalog.route) {
                             popUpTo(AppDestination.Auth.route) { inclusive = true }
@@ -420,8 +431,49 @@ fun AuthShell(
     onPasswordChange: (String) -> Unit,
     onModeChange: (Boolean) -> Unit,
     onSubmit: () -> Unit,
+    onGoogleSubmit: (String) -> Unit,
     onEnterApp: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val credentialManager = remember { CredentialManager.create(context) }
+    
+    val webClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID 
+
+    fun handleGoogleSignIn() {
+        if (webClientId.isBlank()) {
+            // Error handling or notify user to set GOOGLE_WEB_CLIENT_ID in local.properties
+            return
+        }
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(webClientId)
+            .build()
+
+        val request: GetCredentialRequest = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        scope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = context,
+                )
+                val credential = result.credential
+                if (credential is androidx.credentials.CustomCredential && 
+                    credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    println("Google Sign-In Success: Token Received")
+                    onGoogleSubmit(googleIdTokenCredential.idToken)
+                }
+            } catch (e: GetCredentialException) {
+                println("Google Sign-In Error: ${e.message} (Type: ${e.javaClass.simpleName})")
+                onNameChange("GOOGLE_ERROR: ${e.message}")
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -499,6 +551,20 @@ fun AuthShell(
             ) {
                 Text(if (state.isSignup) "Daftar" else "Login")
             }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = { handleGoogleSignIn() },
+                enabled = !state.isSubmitting && !state.session.isRestoring,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Sign in with Google")
+            }
             UMKMSecondaryButton(
                 onClick = { onModeChange(!state.isSignup) },
                 enabled = !state.isSubmitting,
@@ -571,6 +637,7 @@ private fun UMKMShopAppPreview() {
             onAuthSetPassword = {},
             onAuthSetSignup = {},
             onAuthSubmit = {},
+            onAuthGoogleSubmit = {},
             onAuthLogout = {},
         )
     }

@@ -7,11 +7,14 @@ import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
 import javax.sql.DataSource
+import org.slf4j.LoggerFactory
 
 class WorkerDatabase(
     private val dataSource: DataSource,
     private val queueName: String,
 ) {
+    private val log = LoggerFactory.getLogger(WorkerDatabase::class.java)
+
     fun readQueue(visibilityTimeoutSeconds: Int, batchSize: Int): List<QueueJob> =
         dataSource.connection.use { connection ->
             connection.prepareStatement(
@@ -43,11 +46,7 @@ class WorkerDatabase(
     fun getPushTokens(userId: UUID): List<PushToken> =
         dataSource.connection.use { connection ->
             connection.prepareStatement(
-                """
-                select id, fcm_token
-                from public.push_tokens
-                where user_id = ?
-                """.trimIndent(),
+                "select id, fcm_token from public.push_tokens where user_id = ?"
             ).use { statement ->
                 statement.setObject(1, userId)
                 statement.executeQuery().use { rows ->
@@ -86,15 +85,11 @@ class WorkerDatabase(
                 statement.setObject(1, messageId)
                 statement.setObject(2, roomId)
                 statement.executeQuery().use { rows ->
-                    if (!rows.next()) {
-                        null
-                    } else {
-                        NewMessageDetails(
-                            senderName = rows.getString("sender_name"),
-                            productName = rows.getString("product_name"),
-                            messageText = rows.getString("message_text"),
-                        )
-                    }
+                    if (!rows.next()) null else NewMessageDetails(
+                        senderName = rows.getString("sender_name"),
+                        productName = rows.getString("product_name"),
+                        messageText = rows.getString("message_text"),
+                    )
                 }
             }
         }
@@ -102,12 +97,7 @@ class WorkerDatabase(
     fun getReplyReminderDetails(roomId: UUID): ReplyReminderDetails? =
         dataSource.connection.use { connection ->
             connection.prepareStatement(
-                """
-                select products.name as product_name
-                from public.chat_rooms rooms
-                left join public.products products on products.id = rooms.product_id
-                where rooms.id = ?
-                """.trimIndent(),
+                "select p.name as product_name from public.chat_rooms r left join public.products p on p.id = r.product_id where r.id = ?"
             ).use { statement ->
                 statement.setObject(1, roomId)
                 statement.executeQuery().use { rows ->
@@ -119,26 +109,15 @@ class WorkerDatabase(
     fun getOrderNotificationDetails(orderId: UUID): OrderNotificationDetails? =
         dataSource.connection.use { connection ->
             connection.prepareStatement(
-                """
-                select products.name as product_name,
-                       orders.total_amount,
-                       orders.status
-                from public.orders
-                left join public.products products on products.id = orders.product_id
-                where orders.id = ?
-                """.trimIndent(),
+                "select p.name as product_name, o.total_amount, o.status from public.orders o left join public.products p on p.id = o.product_id where o.id = ?"
             ).use { statement ->
                 statement.setObject(1, orderId)
                 statement.executeQuery().use { rows ->
-                    if (!rows.next()) {
-                        null
-                    } else {
-                        OrderNotificationDetails(
-                            productName = rows.getString("product_name"),
-                            totalAmount = rows.getDouble("total_amount").takeUnless { rows.wasNull() },
-                            status = rows.getString("status"),
-                        )
-                    }
+                    if (!rows.next()) null else OrderNotificationDetails(
+                        productName = rows.getString("product_name"),
+                        totalAmount = rows.getDouble("total_amount").takeUnless { rows.wasNull() },
+                        status = rows.getString("status"),
+                    )
                 }
             }
         }
@@ -155,12 +134,13 @@ class WorkerDatabase(
         }
 }
 
-fun createDataSource(config: WorkerConfig): HikariDataSource {
+fun createDataSource(config: WorkerConfig, poolSize: Int = config.dbPoolMaxSize): HikariDataSource {
     val hikariConfig = HikariConfig().apply {
         jdbcUrl = config.databaseUrl
-        maximumPoolSize = config.dbPoolMaxSize
+        maximumPoolSize = poolSize
         minimumIdle = 1
-        poolName = "umkmshop-notification-worker"
+        poolName = "umkmshop-backend-pool"
+        addDataSourceProperty("prepareThreshold", "0") // Penting untuk Supavisor
     }
     return HikariDataSource(hikariConfig)
 }

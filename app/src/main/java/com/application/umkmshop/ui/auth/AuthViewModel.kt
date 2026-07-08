@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.umkmshop.data.auth.AuthRepository
 import com.application.umkmshop.data.auth.AuthSessionState
+import com.application.umkmshop.data.auth.AuthErrorParser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -70,9 +71,21 @@ class AuthViewModel(
                     )
                 }
             }.getOrElse { error ->
-                AuthSessionState(isRestoring = false, message = error.message ?: "Auth gagal.")
+                AuthSessionState(isRestoring = false, message = AuthErrorParser.mapThrowableToMessage(error))
             }
 
+            _state.update { it.copy(isSubmitting = false, session = result) }
+        }
+    }
+
+    fun signInWithGoogle(idToken: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isSubmitting = true, session = it.session.copy(message = null)) }
+            val result = runCatching {
+                repository.signInWithGoogle(idToken)
+            }.getOrElse { error ->
+                AuthSessionState(isRestoring = false, message = AuthErrorParser.mapThrowableToMessage(error))
+            }
             _state.update { it.copy(isSubmitting = false, session = result) }
         }
     }
@@ -82,7 +95,7 @@ class AuthViewModel(
             _state.update { it.copy(isSubmitting = true) }
             val logoutResult = runCatching { repository.logout() }
             val result = logoutResult
-                .getOrElse { error -> AuthSessionState(isRestoring = false, message = error.message ?: "Logout gagal.") }
+                .getOrElse { error -> AuthSessionState(isRestoring = false, message = AuthErrorParser.mapThrowableToMessage(error)) }
             _state.update { it.copy(isSubmitting = false, session = result, password = "") }
             if (logoutResult.isSuccess) {
                 onLoggedOut()

@@ -1,6 +1,7 @@
 package com.application.umkmshop.backend.oauth
 
 import java.math.BigInteger
+import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.MessageDigest
@@ -8,8 +9,8 @@ import java.security.SecureRandom
 import java.security.Signature
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.time.Clock
-import java.time.Instant
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
 
 private val secureRandom = SecureRandom()
@@ -23,8 +24,8 @@ fun randomToken(byteCount: Int = 32): String {
 fun sha256Base64Url(value: String): String =
     base64Url(MessageDigest.getInstance("SHA-256").digest(value.toByteArray(Charsets.UTF_8)))
 
-fun tokenHash(value: String, pepper: String): String =
-    sha256Base64Url("$pepper:$value")
+fun tokenHash(value: String): String =
+    sha256Base64Url(value)
 
 fun constantTimeEquals(left: String, right: String): Boolean =
     MessageDigest.isEqual(left.toByteArray(Charsets.UTF_8), right.toByteArray(Charsets.UTF_8))
@@ -62,18 +63,28 @@ private fun unsignedBase64Url(value: BigInteger): String {
     return base64Url(bytes)
 }
 
-class MutableClock(
-    private var millis: Long,
-) : Clock() {
-    override fun getZone() = java.time.ZoneOffset.UTC
+fun KeyPair.toPem(): Pair<String, String> {
+    val privatePem = "-----BEGIN PRIVATE KEY-----\n" +
+        Base64.getMimeEncoder().encodeToString(private.encoded) +
+        "\n-----END PRIVATE KEY-----"
+    val publicPem = "-----BEGIN PUBLIC KEY-----\n" +
+        Base64.getMimeEncoder().encodeToString(public.encoded) +
+        "\n-----END PUBLIC KEY-----"
+    return privatePem to publicPem
+}
 
-    override fun withZone(zone: java.time.ZoneId?) = this
+fun decodePrivateKey(pem: String): RSAPrivateKey {
+    val clean = pem.replace("-----BEGIN PRIVATE KEY-----", "")
+        .replace("-----END PRIVATE KEY-----", "")
+        .replace("\\s".toRegex(), "")
+    val bytes = Base64.getDecoder().decode(clean)
+    return KeyFactory.getInstance("RSA").generatePrivate(PKCS8EncodedKeySpec(bytes)) as RSAPrivateKey
+}
 
-    override fun millis(): Long = millis
-
-    override fun instant(): Instant = Instant.ofEpochMilli(millis)
-
-    fun advanceMillis(delta: Long) {
-        millis += delta
-    }
+fun decodePublicKey(pem: String): RSAPublicKey {
+    val clean = pem.replace("-----BEGIN PUBLIC KEY-----", "")
+        .replace("-----END PUBLIC KEY-----", "")
+        .replace("\\s".toRegex(), "")
+    val bytes = Base64.getDecoder().decode(clean)
+    return KeyFactory.getInstance("RSA").generatePublic(X509EncodedKeySpec(bytes)) as RSAPublicKey
 }

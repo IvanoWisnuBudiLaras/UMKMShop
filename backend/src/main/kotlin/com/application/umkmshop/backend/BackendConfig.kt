@@ -8,9 +8,13 @@ data class BackendConfig(
     val oauth: OAuthServerConfig,
     val workerMode: WorkerMode,
     val worker: WorkerConfig?,
+    val supabaseJwtSecret: String?,
+    val supabaseUrl: String?,
+    val supabaseKey: String?,
 ) {
     companion object {
         fun fromEnvironment(env: Map<String, String> = System.getenv()): BackendConfig {
+            // ... (keep port and worker logic)
             val port = env.intValue("UMKMSHOP_BACKEND_PORT")
                 ?: env.intValue("PORT")
                 ?: env.intValue("UMKMSHOP_OAUTH_PORT")
@@ -37,6 +41,9 @@ data class BackendConfig(
                 oauth = OAuthServerConfig.fromEnvironment(env, defaultPort = port),
                 workerMode = workerMode,
                 worker = workerConfig,
+                supabaseJwtSecret = env["SUPABASE_JWT_SECRET"] ?: env["UMKMSHOP_SUPABASE_JWT_SECRET"],
+                supabaseUrl = env["SUPABASE_URL"],
+                supabaseKey = env["SUPABASE_ANON_KEY"] ?: env["SUPABASE_PUBLISHABLE_KEY"]
             )
         }
     }

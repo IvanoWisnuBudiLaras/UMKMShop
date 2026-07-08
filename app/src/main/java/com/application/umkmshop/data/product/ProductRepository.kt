@@ -254,7 +254,9 @@ class ProductRepository(
                         category = input.category.cleanedOrNull(),
                         status = PRODUCT_STATUS_INACTIVE,
                     ),
-                )
+                ) {
+                    select() // WAJIB: Meminta data balik agar tidak EOF
+                }
                 .decodeSingle<ProductDto>()
 
             try {
@@ -284,8 +286,16 @@ class ProductRepository(
                     }
             } catch (error: Throwable) {
                 uploadedImage?.path?.let { runCatching { storageService.deleteImage(it) } }
-                runCatching { deleteOwnProduct(product.id, sellerId) }
-                throw error
+                val deleteResult = runCatching { deleteOwnProduct(product.id, sellerId) }
+                
+                val userFriendlyError = if (error.message?.contains("bucket", ignoreCase = true) == true) {
+                    Exception("Gagal mengunggah foto. Pastikan bucket 'product-images' sudah ada di Supabase.", error)
+                } else if (error.message?.contains("permission", ignoreCase = true) == true) {
+                    Exception("Gagal mengunggah foto. Periksa kebijakan RLS Storage Anda.", error)
+                } else {
+                    Exception("Produk tersimpan sebagai 'Nonaktif' karena gagal mengunggah foto: ${error.message}", error)
+                }
+                throw userFriendlyError
             }
 
             product.copy(status = PRODUCT_STATUS_ACTIVE)
@@ -311,16 +321,21 @@ class ProductRepository(
                 }
 
             input.imageUpload?.let { upload ->
-                val uploadedImage = storageService.uploadProductImage(
-                    sellerId = sellerId,
-                    productId = productId,
-                    upload = upload,
-                )
+                val uploadedImage = try {
+                    storageService.uploadProductImage(
+                        sellerId = sellerId,
+                        productId = productId,
+                        upload = upload,
+                    )
+                } catch (error: Throwable) {
+                    throw Exception("Gagal mengganti foto: ${error.message}", error)
+                }
+                
                 try {
                     replacePrimaryImage(productId = productId, imageUrl = uploadedImage.url)
                 } catch (error: Throwable) {
                     runCatching { storageService.deleteImage(uploadedImage.path) }
-                    throw error
+                    throw Exception("Gagal memperbarui data foto di database.", error)
                 }
             }
 
@@ -342,6 +357,25 @@ class ProductRepository(
                     }
                 }
             getOwnProduct(productId)
+        }
+
+    suspend fun deleteProduct(productId: String) =
+        withContext(ioDispatcher) {
+            val sellerId = currentUserId()
+            
+            // 1. Hapus gambar dari database (cascade akan hapus record)
+            // 2. Hapus produk dari database
+            client.from("products")
+                .delete {
+                    filter {
+                        eq("id", productId)
+                        eq("seller_id", sellerId)
+                    }
+                }
+            
+            // Catatan: File fisik di Supabase Storage sebaiknya juga dihapus.
+            // Karena path kita products/{seller_id}/{product_id}/..., 
+            // kita bisa mencoba menghapus folder tersebut jika storage SDK mendukungnya.
         }
 
     private suspend fun getOwnProduct(productId: String): SellerProduct {

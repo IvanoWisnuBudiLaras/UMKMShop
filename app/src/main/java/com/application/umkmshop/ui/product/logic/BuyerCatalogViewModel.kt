@@ -2,6 +2,7 @@ package com.application.umkmshop.ui.product.logic
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.umkmshop.data.auth.AuthErrorParser
 import com.application.umkmshop.data.product.BuyerCatalogFilter
 import com.application.umkmshop.data.product.BuyerProduct
 import com.application.umkmshop.data.product.ProductRepository
@@ -165,6 +166,15 @@ open class BuyerCatalogViewModel(
                 )
             }.onSuccess { result ->
                 if (requestId != catalogRequestId) return@onSuccess
+                val msg = if (result.products.isEmpty()) {
+                    when {
+                        requestFilter.searchQuery.isNotBlank() -> "Produk tidak ditemukan untuk pencarian ini."
+                        requestFilter.city.isNotBlank() -> "Belum ada produk tersedia di ${requestFilter.city}."
+                        requestFilter.category.isNotBlank() -> "Belum ada produk di kategori ini."
+                        else -> "Katalog sedang kosong. Silakan kembali lagi nanti."
+                    }
+                } else null
+
                 _catalogState.update {
                     it.copy(
                         products = result.products,
@@ -172,6 +182,7 @@ open class BuyerCatalogViewModel(
                         hasPreviousPage = result.hasPreviousPage,
                         hasNextPage = result.hasNextPage,
                         isLoading = false,
+                        message = msg
                     )
                 }
             }.onFailure { error ->
@@ -179,7 +190,7 @@ open class BuyerCatalogViewModel(
                 _catalogState.update {
                     it.copy(
                         isLoading = false,
-                        message = error.userMessage("Gagal memuat katalog."),
+                        message = AuthErrorParser.mapThrowableToMessage(error),
                     )
                 }
             }
@@ -216,7 +227,7 @@ open class BuyerCatalogViewModel(
                     _detailState.update {
                         BuyerProductDetailUiState(
                             isLoading = false,
-                            message = error.userMessage("Produk tidak tersedia di katalog."),
+                            message = AuthErrorParser.mapThrowableToMessage(error),
                         )
                     }
                 }

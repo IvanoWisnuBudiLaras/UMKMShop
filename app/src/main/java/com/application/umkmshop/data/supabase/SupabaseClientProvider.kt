@@ -6,6 +6,7 @@ import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
 import io.github.jan.supabase.storage.Storage
+import io.ktor.client.engine.okhttp.OkHttp
 
 object SupabaseClientProvider {
     const val MISSING_CONFIG_MESSAGE = "Konfigurasi Supabase belum tersedia."
@@ -20,6 +21,7 @@ object SupabaseClientProvider {
             supabaseUrl = BuildConfig.SUPABASE_URL,
             supabaseKey = BuildConfig.SUPABASE_PUBLISHABLE_KEY,
         ) {
+            httpEngine = OkHttp.create()
             install(Auth)
             install(Postgrest)
             install(Realtime)

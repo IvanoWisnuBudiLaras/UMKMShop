@@ -60,7 +60,9 @@ class ChatRepository(
                             sellerId = product.sellerId,
                             productId = product.id,
                         ),
-                    )
+                    ) {
+                        select()
+                    }
                     .decodeSingle<ChatRoomDto>()
             }.getOrElse {
                 findRoom(
@@ -160,7 +162,9 @@ class ChatRepository(
                         senderId = senderId,
                         messageText = cleanedMessage,
                     ),
-                )
+                ) {
+                    select()
+                }
                 .decodeSingle<MessageDto>()
                 .toChatMessageOrNull()
                 ?: error("Pesan tersimpan tetapi payload tidak lengkap.")

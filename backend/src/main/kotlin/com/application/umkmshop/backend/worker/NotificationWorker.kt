@@ -31,19 +31,36 @@ class NotificationWorker(
 
         coroutineScope {
             while (isActive) {
-                val jobs = database.readQueue(config.visibilityTimeoutSeconds, effectiveBatchSize)
-                if (jobs.isEmpty()) {
+                if (!runBatch()) {
                     delay(config.emptyPollDelayMillis)
-                    continue
                 }
-
-                jobs.map { job ->
-                    async(Dispatchers.IO) {
-                        processJob(job)
-                    }
-                }.awaitAll()
             }
         }
+    }
+
+    suspend fun runBatch(): Boolean = coroutineScope {
+        val jobs = try {
+            database.readQueue(config.visibilityTimeoutSeconds, effectiveBatchSize)
+        } catch (e: Exception) {
+            log.error("Failed to read from PGMQ queue: ${e.message}")
+            return@coroutineScope false
+        }
+
+        if (jobs.isEmpty()) {
+            return@coroutineScope false
+        }
+
+        log.info("Processing batch of ${jobs.size} jobs...")
+        jobs.map { job ->
+            async(Dispatchers.IO) {
+                try {
+                    processJob(job)
+                } catch (e: Exception) {
+                    log.error("Critical error processing job ${job.msgId}: ${e.message}", e)
+                }
+            }
+        }.awaitAll()
+        true
     }
 
     private fun processJob(job: QueueJob) {

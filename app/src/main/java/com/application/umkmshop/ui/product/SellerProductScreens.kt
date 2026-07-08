@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddBusiness
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,12 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.umkmshop.R
 import com.application.umkmshop.data.product.ProductImageUpload
 import com.application.umkmshop.data.product.SellerProduct
 import com.application.umkmshop.data.product.productCategoryDisplayLabel
+import com.application.umkmshop.data.shipping.WilayahItem
 import com.application.umkmshop.ui.components.*
 import com.application.umkmshop.ui.notification.InboxSummaryButton
 import com.application.umkmshop.ui.product.logic.*
@@ -55,9 +59,10 @@ fun SellerDashboardScreen(
         )
         
         SellerStatsRow(state = state)
-        SellerCityEditor(
+        SellerWilayahEditor(
             state = state,
-            onCityChange = viewModel::setCity,
+            onProvinceSelected = viewModel::selectProvince,
+            onRegencySelected = viewModel::selectRegency,
             onSaveCity = viewModel::saveCity,
         )
 
@@ -85,13 +90,17 @@ fun SellerDashboardScreen(
         }
 
         if (state.products.isEmpty() && !state.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    text = "Belum ada produk.",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                )
-            }
+            UMKMEmptyState(
+                message = "Belum ada produk",
+                description = "Mulai tambahkan produk Anda agar pembeli bisa menemukannya.",
+                icon = Icons.Default.AddBusiness,
+                actionLabel = "Tambah Produk Pertama",
+                onAction = {
+                    viewModel.startCreate()
+                    onAddProduct()
+                },
+                modifier = Modifier.weight(1f)
+            )
         } else {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -109,6 +118,7 @@ fun SellerDashboardScreen(
                             onEditProduct(product.id)
                         },
                         onDeactivate = { viewModel.deactivate(product.id) },
+                        onDelete = { viewModel.deleteProduct(product.id) }
                     )
                 }
             }
@@ -117,9 +127,10 @@ fun SellerDashboardScreen(
 }
 
 @Composable
-private fun SellerCityEditor(
+private fun SellerWilayahEditor(
     state: SellerProductUiState,
-    onCityChange: (String) -> Unit,
+    onProvinceSelected: (WilayahItem) -> Unit,
+    onRegencySelected: (WilayahItem) -> Unit,
     onSaveCity: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -144,30 +155,44 @@ private fun SellerCityEditor(
                     modifier = Modifier.size(18.dp),
                 )
                 Text(
-                    text = "Kota toko",
+                    text = "Lokasi Toko (wilayah.id)",
                     style = MaterialTheme.typography.titleLarge.copy(fontSize = 15.sp),
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-            SellerCityAutocomplete(
-                city = state.city,
-                cityOptions = state.cityOptions,
-                onCityChange = onCityChange,
-                enabled = !state.isSaving,
-                modifier = Modifier.fillMaxWidth(),
+
+            WilayahDropdown(
+                label = "Provinsi",
+                items = state.provinces,
+                selectedItem = state.selectedProvince,
+                onItemSelected = onProvinceSelected,
+                enabled = !state.isSaving
             )
+
+            WilayahDropdown(
+                label = "Kabupaten / Kota",
+                items = state.regencies,
+                selectedItem = state.selectedRegency,
+                onItemSelected = onRegencySelected,
+                enabled = state.selectedProvince != null && !state.isSaving
+            )
+
             UMKMSecondaryButton(
                 onClick = onSaveCity,
-                enabled = !state.isSaving,
+                enabled = !state.isSaving && state.selectedRegency != null,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Simpan Kota")
+                Text("Simpan Lokasi")
             }
+
             state.message?.let { message ->
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = if (message.contains("tersimpan", ignoreCase = true)) 
+                        MaterialTheme.colorScheme.primary 
+                    else 
+                        MaterialTheme.colorScheme.error,
                 )
             }
         }
@@ -176,63 +201,43 @@ private fun SellerCityEditor(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SellerCityAutocomplete(
-    city: String,
-    cityOptions: List<String>,
-    onCityChange: (String) -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
+private fun WilayahDropdown(
+    label: String,
+    items: List<WilayahItem>,
+    selectedItem: WilayahItem?,
+    onItemSelected: (WilayahItem) -> Unit,
+    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val filteredOptions = remember(city, cityOptions) {
-        cityOptions
-            .filter { option ->
-                city.isBlank() || option.contains(city, ignoreCase = true)
-            }
-            .take(8)
-    }
 
     ExposedDropdownMenuBox(
-        expanded = expanded && filteredOptions.isNotEmpty(),
-        onExpandedChange = {
-            if (enabled) expanded = !expanded
-        },
-        modifier = modifier,
+        expanded = expanded && enabled,
+        onExpandedChange = { if (enabled) expanded = !expanded },
+        modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = city,
-            onValueChange = {
-                onCityChange(it)
-                expanded = true
-            },
-            enabled = enabled,
-            singleLine = true,
-            label = { Text("Pilih atau ketik kota") },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_material_symbol_location_on_24),
-                    contentDescription = null,
-                )
-            },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
+            value = selectedItem?.name ?: "",
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
-                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
+            enabled = enabled
         )
         ExposedDropdownMenu(
-            expanded = expanded && filteredOptions.isNotEmpty(),
-            onDismissRequest = { expanded = false },
+            expanded = expanded && enabled,
+            onDismissRequest = { expanded = false }
         ) {
-            filteredOptions.forEach { option ->
+            items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(item.name) },
                     onClick = {
-                        onCityChange(option)
+                        onItemSelected(item)
                         expanded = false
-                    },
+                    }
                 )
             }
         }
@@ -283,6 +288,7 @@ private fun SellerProductCard(
     enabled: Boolean,
     onEdit: () -> Unit,
     onDeactivate: () -> Unit,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -341,12 +347,23 @@ private fun SellerProductCard(
                 ) {
                     Text("Edit", style = MaterialTheme.typography.labelLarge)
                 }
-                UMKMSecondaryButton(
-                    onClick = onDeactivate,
-                    enabled = enabled && product.isActive,
-                    modifier = Modifier.weight(1f).heightIn(min = 40.dp)
-                ) {
-                    Text("Nonaktif", style = MaterialTheme.typography.labelLarge)
+                if (product.isActive) {
+                    UMKMSecondaryButton(
+                        onClick = onDeactivate,
+                        enabled = enabled,
+                        modifier = Modifier.weight(1f).heightIn(min = 40.dp)
+                    ) {
+                        Text("Sembunyikan", style = MaterialTheme.typography.labelLarge)
+                    }
+                } else {
+                    Button(
+                        onClick = onDelete,
+                        enabled = enabled,
+                        modifier = Modifier.weight(1f).heightIn(min = 40.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer, contentColor = MaterialTheme.colorScheme.onErrorContainer)
+                    ) {
+                        Text("Hapus Permanen", style = MaterialTheme.typography.labelLarge)
+                    }
                 }
             }
         }
@@ -451,6 +468,16 @@ fun ProductFormScreen(
             item {
                 if (state.isSaving) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                }
+                state.message?.let { message ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 UMKMPrimaryButton(

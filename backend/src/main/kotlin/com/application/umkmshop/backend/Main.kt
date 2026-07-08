@@ -1,27 +1,22 @@
 package com.application.umkmshop.backend
 
-import com.application.umkmshop.backend.oauth.createDemoOAuthService
-import com.application.umkmshop.backend.oauth.oauthRoutes
-import com.application.umkmshop.backend.worker.NotificationWorker
-import com.application.umkmshop.backend.worker.WorkerDatabase
-import com.application.umkmshop.backend.worker.createDataSource
-import com.application.umkmshop.backend.worker.createFirebaseNotifier
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.call
+import com.application.umkmshop.backend.oauth.*
+import com.application.umkmshop.backend.worker.*
+import io.ktor.http.*
+import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
+import java.time.Clock
+import java.time.Instant
 
-fun main(@Suppress("UNUSED_PARAMETER") args: Array<String>) {
+fun main() {
     runBlocking {
         runBackend()
     }
@@ -30,51 +25,125 @@ fun main(@Suppress("UNUSED_PARAMETER") args: Array<String>) {
 private suspend fun runBackend() = coroutineScope {
     val log = LoggerFactory.getLogger("UMKMShopBackend")
     val config = BackendConfig.fromEnvironment()
-    val oauthService = createDemoOAuthService(config.oauth)
+    val clock = Clock.systemUTC()
+    
+    // 1. Database & Store Setup (Merged Pool for Worker + OAuth)
+    val dataSource = if (config.oauth.useJdbcStore || config.workerMode == WorkerMode.Enabled) {
+        val workerConfig = config.worker ?: WorkerConfig.fromEnvironment()
+        createDataSource(workerConfig, poolSize = 12)
+    } else null
 
-    val workerResources = config.worker?.let { workerConfig ->
-        val dataSource = createDataSource(workerConfig)
-        val database = WorkerDatabase(dataSource, workerConfig.queueName)
-        val notifier = createFirebaseNotifier(workerConfig)
-        WorkerResources(dataSource, NotificationWorker(workerConfig, database, notifier))
-    }
-
-    val workerJob = workerResources?.let { resources ->
-        log.info("Starting notification worker in backend process")
-        launch(SupervisorJob() + Dispatchers.Default) {
-            resources.worker.run()
+    val store = if (config.oauth.useJdbcStore && dataSource != null) {
+        JdbcOAuthStore(dataSource).also { 
+            it.registerClient(config.oauth.demoClient)
+            ensureSigningKey(it) 
+        }
+    } else {
+        InMemoryOAuthStore().also { 
+            it.registerClient(config.oauth.demoClient)
+            ensureSigningKey(it) 
         }
     }
 
-    if (workerResources == null) {
-        when (config.workerMode) {
-            WorkerMode.DisabledByConfig -> log.info("Notification worker disabled by UMKMSHOP_WORKER_ENABLED=false")
-            WorkerMode.DisabledMissingConfig -> log.info(
-                "Notification worker disabled because database/Firebase env is incomplete. Set UMKMSHOP_WORKER_ENABLED=true to fail fast in production.",
-            )
-            WorkerMode.Enabled -> Unit
-        }
-    }
+    // 2. Service Setup
+    val jwtService = JwtService(config.oauth.issuer, store, clock)
+    val oauthService = OAuthService(config.oauth.issuer, store, jwtService, clock)
+    val supabaseAuth = if (config.supabaseJwtSecret != null && config.supabaseUrl != null && config.supabaseKey != null) {
+        SupabaseAuthService(config.supabaseUrl, config.supabaseKey, config.supabaseJwtSecret)
+    } else null
 
-    val server = embeddedServer(Netty, port = config.port, host = "0.0.0.0") {
-        routing {
-            get("/health") {
-                call.respondText("ok", status = HttpStatusCode.OK)
+    // 3. Background Worker (Isolated Coroutine Scope)
+    var lastWorkerPoll = Instant.EPOCH
+    var workerError: String? = null
+    
+    val workerJob = config.worker?.let { workerConfig ->
+        log.info("Preparing isolated Notification Worker...")
+        
+        launch(Dispatchers.Default + SupervisorJob()) {
+            val ds = dataSource ?: createDataSource(workerConfig, poolSize = 12)
+            val database = WorkerDatabase(ds, workerConfig.queueName)
+            
+            val notifier = try {
+                createFirebaseNotifier(workerConfig)
+            } catch (e: Exception) {
+                val msg = "FATAL: Failed to initialize Firebase Notifier: ${e.message}"
+                log.error(msg)
+                workerError = msg
+                return@launch
+            }
+
+            val worker = NotificationWorker(workerConfig, database, notifier)
+            log.info("Launching Notification Worker loop...")
+            
+            while (isActive) {
+                try {
+                    lastWorkerPoll = Instant.now()
+                    worker.runBatch()
+                    workerError = null
+                } catch (e: Exception) {
+                    workerError = "Worker Batch Error: ${e.message}"
+                    log.warn(workerError)
+                }
+                delay(workerConfig.emptyPollDelayMillis)
             }
         }
-        oauthRoutes(oauthService, config.oauth.demoUser)
     }
+
+    // 4. HTTP Server
+    val server = embeddedServer(Netty, port = config.port, host = "0.0.0.0") {
+        install(CORS) {
+            anyHost()
+            allowHeader(HttpHeaders.Authorization)
+            allowHeader(HttpHeaders.ContentType)
+            allowMethod(HttpMethod.Options)
+            allowMethod(HttpMethod.Post)
+            allowMethod(HttpMethod.Get)
+        }
+        install(StatusPages) {
+            exception<Throwable> { call, cause ->
+                log.error("Unhandled OAuth/HTTP Exception", cause)
+                call.respondText(
+                    """{"error":"server_error","error_description":"${cause.message ?: "Internal Error"}"}""",
+                    ContentType.Application.Json,
+                    HttpStatusCode.InternalServerError
+                )
+            }
+        }
+        routing {
+            get("/health") {
+                val now = Instant.now().epochSecond
+                val workerStillPolling = workerJob == null || (now - lastWorkerPoll.epochSecond < 60)
+                val dbHealthy = dataSource?.connection?.use { !it.isClosed } ?: true
+                
+                if (workerStillPolling && dbHealthy && workerError == null) {
+                    call.respondText("ok", status = HttpStatusCode.OK)
+                } else {
+                    val status = "worker_active=$workerStillPolling, db=$dbHealthy, error=${workerError ?: "none"}"
+                    call.respondText(status, status = HttpStatusCode.ServiceUnavailable)
+                }
+            }
+        }
+        oauthRoutes(oauthService, supabaseAuth)
+    }
+
     try {
-        log.info("Starting UMKMShop backend on port {}", config.port)
+        log.info("Starting UMKMShop Backend (Worker + OAuth) on port {}", config.port)
         server.start(wait = true)
     } finally {
         workerJob?.cancelAndJoin()
-        workerResources?.dataSource?.close()
+        dataSource?.close()
         server.stop(1_000, 5_000)
     }
 }
 
-private data class WorkerResources(
-    val dataSource: AutoCloseable,
-    val worker: NotificationWorker,
-)
+private fun ensureSigningKey(store: OAuthStore) {
+    if (store.getActiveSigningKey() == null) {
+        val pair = generateRsaKeyPair()
+        val pems = pair.toPem()
+        store.saveSigningKey(SigningKey(
+            kid = "prod-rsa-${Instant.now().epochSecond}",
+            privateKeyPem = pems.first,
+            publicKeyPem = pems.second
+        ))
+    }
+}

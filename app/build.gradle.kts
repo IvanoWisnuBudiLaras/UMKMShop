@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     id("jacoco")
+    alias(libs.plugins.google.services) apply false
 }
 
 jacoco {
@@ -38,6 +39,7 @@ fun localPropertyOrEnv(name: String): String =
 
 val supabaseUrl = localPropertyOrEnv("SUPABASE_URL")
 val supabasePublishableKey = localPropertyOrEnv("SUPABASE_PUBLISHABLE_KEY")
+val googleWebClientId = localPropertyOrEnv("GOOGLE_WEB_CLIENT_ID")
 val releaseStoreFile = localPropertyOrEnv("RELEASE_STORE_FILE")
 val releaseStorePassword = localPropertyOrEnv("RELEASE_STORE_PASSWORD")
 val releaseKeyAlias = localPropertyOrEnv("RELEASE_KEY_ALIAS")
@@ -92,6 +94,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_PUBLISHABLE_KEY", "\"$supabasePublishableKey\"")
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$googleWebClientId\"")
     }
 
     testOptions {
@@ -130,6 +133,7 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:34.15.0"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
@@ -141,12 +145,16 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
     implementation(libs.ktor.client.android)
+    implementation("io.ktor:ktor-client-okhttp:3.1.3") // Tambahkan OkHttp untuk dukungan WebSocket
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.supabase.auth)
     implementation(libs.supabase.postgrest)

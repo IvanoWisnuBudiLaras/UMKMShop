@@ -14,6 +14,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Inventory
+import androidx.compose.material.icons.filled.SearchOff
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -85,53 +88,29 @@ fun BuyerCatalogScreen(
                 if (state.isLoading) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
-                state.message?.let { message ->
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
             }
 
             if (state.products.isEmpty() && !state.isLoading) {
                 item(span = { GridItemSpan(2) }) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 80.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Surface(
-                            modifier = Modifier.size(120.dp),
-                            shape = CircleShape,
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = "🔍",
-                                    fontSize = 48.sp
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = if (state.searchQuery.isNotEmpty()) 
-                                "Tidak ada hasil untuk \"${state.searchQuery}\"" 
-                            else 
-                                "Belum ada bahan atau komponen aktif.",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 32.dp)
-                        )
-                        if (state.searchQuery.isNotEmpty()) {
-                            TextButton(onClick = viewModel::clearFilters) {
-                                Text("Bersihkan Filter")
-                            }
-                        }
-                    }
+                    val isFiltering = state.searchQuery.isNotBlank() || 
+                                     state.category.isNotBlank() || 
+                                     state.city.isNotBlank() || 
+                                     state.minPrice.isNotBlank() || 
+                                     state.maxPrice.isNotBlank()
+
+                    UMKMEmptyState(
+                        message = state.message ?: if (isFiltering) "Produk tidak ditemukan" else "Belum ada produk",
+                        description = if (isFiltering) 
+                            "Coba ubah filter atau kata kunci pencarian Anda." 
+                        else 
+                            "Katalog sedang kosong saat ini. Silakan kembali lagi nanti.",
+                        icon = if (isFiltering) Icons.Default.SearchOff else Icons.Default.Inventory,
+                        actionLabel = if (isFiltering) "Bersihkan Filter" else "Muat Ulang",
+                        onAction = {
+                            if (isFiltering) viewModel.clearFilters() else viewModel.refreshCatalog(resetPage = true)
+                        },
+                        modifier = Modifier.padding(top = 40.dp)
+                    )
                 }
             } else {
                 items(
@@ -631,29 +610,16 @@ fun FavoriteProductsScreen(
                 if (state.isLoading) {
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 }
-                state.message?.let { message ->
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
             }
 
             if (state.products.isEmpty() && !state.isLoading) {
                 item(span = { GridItemSpan(2) }) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "Belum ada produk favorit.",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                        )
-                    }
+                    UMKMEmptyState(
+                        message = "Belum ada favorit",
+                        description = "Simpan produk yang Anda sukai agar mudah ditemukan kembali.",
+                        icon = Icons.Default.FavoriteBorder,
+                        modifier = Modifier.padding(top = 40.dp)
+                    )
                 }
             } else {
                 items(
